@@ -4751,29 +4751,27 @@
         (define follow-cdr
           (lambda (e i ctxt used non-results)
             (let f ([e e] [i i] [non-results non-results] [direct? #t])
-              (or
-               (and direct?
-                    (nanopass-case (Lsrc Expr) (result-exp e)
-                      [(call ,preinfo ,pr ,e1)
-                       (guard (eq? (primref-name pr) 'cdr))
-                       (f e1 (fx+ i 1) (cons e non-results) direct?)]
-                      [else #f]))
-               (nanopass-case (Lsrc Expr) (result-exp/indirect-ref e)
-                 [(call ,preinfo ,pr ,e* ...)
-                  (guard (memq (primref-name pr) '(list list* cons*))
-                         (fx> (length e*) (if (eq? (primref-name pr) 'list)
-                                              i
-                                              (fx+ i 1)))
-                         (copyable (list-ref e* i)))
-                  (residualize-seq used '() ctxt)
-                  (fold-left
-                   (lambda (e1 e2) (non-result-exp e2 e1))
-                   (make-nontail (app-ctxt ctxt) (list-ref e* i))
-                   non-results)]
-                 [(call ,preinfo ,pr ,e1)
-                  (guard (eq? (primref-name pr) 'cdr))
-                  (f e1 (fx+ i 1) non-results #f)]
-                 [else #f])))))
+              (nanopass-case (Lsrc Expr) (result-exp e)
+               [(call ,preinfo ,pr ,e1)
+                (guard direct? (eq? (primref-name pr) 'cdr))
+                (f e1 (fx+ i 1) (cons e non-results) direct?)]
+               [else
+                (nanopass-case (Lsrc Expr) (result-exp/indirect-ref e)
+                  [(call ,preinfo ,pr ,e* ...)
+                   (guard (memq (primref-name pr) '(list list* cons*))
+                          (fx> (length e*) (if (eq? (primref-name pr) 'list)
+                                               i
+                                               (fx+ i 1)))
+                          (copyable (list-ref e* i)))
+                   (residualize-seq used '() ctxt)
+                   (fold-left
+                    (lambda (e1 e2) (non-result-exp e2 e1))
+                    (make-nontail (app-ctxt ctxt) (list-ref e* i))
+                    non-results)]
+                  [(call ,preinfo ,pr ,e1)
+                   (guard (eq? (primref-name pr) 'cdr))
+                   (f e1 (fx+ i 1) non-results #f)]
+                  [else #f])]))))
 
         (define doref
           (lambda (ctxt ?x ?i e* d edok?)
