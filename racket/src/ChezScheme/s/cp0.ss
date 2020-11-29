@@ -4839,7 +4839,7 @@
                       (residualize-seq (list ?x) '() ctxt)
                       (non-result-exp (operand-value ?x) (make-nontail (app-ctxt ctxt) e1))]
                      [else
-                      (follow-cdr x 0 ctxt (list ?x) (list (operand-value ?x)))]))))])
+                      (follow-cdr x 0 ctxt (list ?x) '())]))))])
 
         (define-inline 2 cdr
           [(?x)
@@ -4915,7 +4915,7 @@
                (nanopass-case (Lsrc Expr) (result-exp i)
                  [(quote ,d)
                   (guard (fixnum? d) (fx>= d 0))
-                  (follow-cdr x d ctxt (list ?x ?i) (list (operand-value ?x) (operand-value ?i)))]
+                  (follow-cdr x d ctxt (list ?x ?i) (list (operand-value ?i)))]
                  [else #f]))))]))
 
       (let ()
