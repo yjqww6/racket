@@ -560,6 +560,7 @@
                    [cp0-effort-limit (cp0-effort-limit)]
                    [cp0-score-limit (cp0-score-limit)]
                    [cp0-outer-unroll-limit (cp0-outer-unroll-limit)]
+                   [cp0-assume-pair-immutable (cp0-assume-pair-immutable)]
                    [generate-inspector-information (generate-inspector-information)]
                    [generate-procedure-source-information (generate-procedure-source-information)]
                    [$compile-profile ($compile-profile)]

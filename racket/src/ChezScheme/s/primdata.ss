@@ -935,6 +935,7 @@
   (cp0-effort-limit [sig [() -> (ufixnum)] [(ufixnum) -> (void)]] [flags])
   (cp0-outer-unroll-limit [sig [() -> (ufixnum)] [(ufixnum) -> (void)]] [flags])
   (cp0-score-limit [sig [() -> (ufixnum)] [(ufixnum) -> (void)]] [flags])
+  (cp0-assume-pair-immutable [sig [() -> (boolean)] [(ptr) -> (void)]] [flags])
   (current-directory [sig [() -> (pathname)] [(pathname) -> (void)]] [flags])
   (current-error-port [sig [() -> (textual-output-port)] [(textual-output-port) -> (void)]] [flags])  ; not restricted to 1 argument
   (current-eval [sig [() -> (procedure)] [(procedure) -> (void)]] [flags])
