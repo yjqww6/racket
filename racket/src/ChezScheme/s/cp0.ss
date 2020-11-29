@@ -1081,6 +1081,47 @@
                        `(clause (,x* ...) ,interface ,((ids->do-expr (append x* ids)) body)))]))))
             ((ids->do-clause '()) clause)))))
 
+    (define no-pair-mutation
+      (lambda (cl)
+        (call/cc
+         (lambda (exit)
+           (define recur
+             (lambda (e)
+               (nanopass-case (Lsrc Expr) e
+                 [,pr
+                  (guard (memq (primref-name pr) '(set-car! set-cdr!)))
+                  (exit #f)]
+                 [(if ,e0 ,e1 ,e2) (recur e0) (recur e1) (recur e2)]
+                 [(seq ,e0 ,e1) (recur e0) (recur e1)]
+                 [(set! ,maybe-src ,x ,e) (recur e)]
+                 [(case-lambda ,preinfo ,cl ...) (for-each recur-cl cl)]
+                 [(letrec ([,x* ,e*] ...) ,body) (for-each recur e*) (recur body)]
+                 [(letrec* ([,x* ,e*] ...) ,body) (for-each recur e*) (recur body)]
+                 [(call ,preinfo ,pr ,e* ...)
+                  (guard (memq (primref-name pr) '(set-car! set-cdr!)))
+                  (exit #f)]
+                 [(call ,preinfo ,e0 ,e* ...) (recur e0) (for-each recur e*)]
+                 [(record-type ,rtd ,e) (recur e)]
+                 [(record-cd ,rcd ,rtd-expr ,e) (recur rtd-expr) (recur e)]
+                 [(immutable-list (,e* ...) ,e) (for-each recur e*) (recur e)]
+                 [(record ,rtd ,rtd-expr ,e* ...) (recur rtd-expr) (for-each recur e*)]
+                 [(record-ref ,rtd ,type ,index ,e) (recur e)]
+                 [(record-set! ,rtd ,type ,index ,e1 ,e2) (recur e1) (recur e2)]
+                 [(cte-optimization-loc ,box ,e ,exts) (recur e)]
+                 [(foreign (,conv* ...) ,name ,e (,arg-type* ...) ,result-type)
+                  (recur e)]
+                 [(fcallable (,conv* ...) ,e (,arg-type* ...) ,result-type)
+                  (recur e)]
+                 [(cpvalid-defer ,e) (recur e)]
+                 [else (void)])))
+           (define recur-cl
+             (lambda (cl)
+               (nanopass-case (Lsrc CaseLambdaClause) cl
+                 [(clause (,x* ...) ,interface ,body)
+                  (recur body)])))
+           (recur-cl cl)
+           #t))))
+
     (module (pure? ivory? ivory1? simple? simple1? simple/profile? simple/profile1? boolean-valued?
                    single-valued? single-valued single-valued-join single-valued-reduce?
                    single-valued-without-inspecting-continuation?)
@@ -3112,7 +3153,9 @@
                              [(ormap (lambda (cl)
                                        (nanopass-case (Lsrc CaseLambdaClause) cl
                                          [(clause (,x* ...) ,interface ,body)
-                                          (= n interface)]))
+                                          (and (= n interface)
+                                               (or (not assume-pair-immutable)
+                                                   (no-pair-mutation cl)))]))
                                      cl*)
                               (residualize-seq '() (list x) ctxt)
                               (cp0 opt (app-ctxt ctxt) empty-env sc wd (app-name ctxt) moi)]
