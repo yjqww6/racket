@@ -1098,7 +1098,10 @@
                  [(letrec ([,x* ,e*] ...) ,body) (for-each recur e*) (recur body)]
                  [(letrec* ([,x* ,e*] ...) ,body) (for-each recur e*) (recur body)]
                  [(call ,preinfo ,pr ,e* ...)
-                  (guard (memq (primref-name pr) '(set-car! set-cdr!)))
+                  (guard (or (memq (primref-name pr) '(set-car! set-cdr!))
+                             (and (eq? (primref-name pr) '$top-level-value)
+                                  (= (length e*) 1)
+                                  (cp0-constant? gensym? (car e*)))))
                   (exit #f)]
                  [(call ,preinfo ,e0 ,e* ...) (recur e0) (for-each recur e*)]
                  [(record-type ,rtd ,e) (recur e)]
