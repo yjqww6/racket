@@ -3150,13 +3150,13 @@
                           ;; a matching clause
                           (let ([n (length (app-opnds (app-ctxt ctxt)))])
                             (cond
-                             [(ormap (lambda (cl)
-                                       (nanopass-case (Lsrc CaseLambdaClause) cl
-                                         [(clause (,x* ...) ,interface ,body)
-                                          (and (= n interface)
-                                               (or (not assume-pair-immutable)
-                                                   (no-pair-mutation cl)))]))
-                                     cl*)
+                             [(and (ormap (lambda (cl)
+                                            (nanopass-case (Lsrc CaseLambdaClause) cl
+                                                           [(clause (,x* ...) ,interface ,body)
+                                                            (= n interface)]))
+                                          cl*)
+                                   (or (not assume-pair-immutable)
+                                       (andmap no-pair-mutation cl*)))
                               (residualize-seq '() (list x) ctxt)
                               (cp0 opt (app-ctxt ctxt) empty-env sc wd (app-name ctxt) moi)]
                              [else #f])))]
