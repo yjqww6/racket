@@ -2779,4 +2779,6 @@
     (unless (wrapper-procedure? x) ($oops who "~s is not a wrapper procedure" x))
     ($closure-set! x 2 v)))
 
+(define-who $unreachable
+  (lambda () (#3%$unreachable)))
 )

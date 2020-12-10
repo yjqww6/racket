@@ -127,6 +127,10 @@
 ;; ----------------------------------------
 
 (define (raise-arguments-error who what . more)
+  (#%$app/no-inline #2%apply raise-arguments-error/internal who what more)
+  (#%$unreachable))
+
+(define (raise-arguments-error/internal who what . more)
   (unless (symbol? who)
     (raise-argument-error 'raise-arguments-error "symbol?" who))
   (unless (string? what)
@@ -224,9 +228,18 @@
 (define raise-argument-error
   (case-lambda
     [(who what arg)
-     (#%$app/no-inline do-raise-argument-error 'raise-argument-error "given" who what #f arg #f)]
+     (#%$app/no-inline raise-argument-error/internal who what arg)
+     (#%$unreachable)]
     [(who what pos arg . args)
-     (#%$app/no-inline do-raise-argument-error 'raise-argument-error "given" who what pos arg args)]))
+     (#%$app/no-inline #2%apply raise-argument-error/internal who what pos arg args)
+     (#%$unreachable)]))
+
+(define raise-argument-error/internal
+  (case-lambda
+    [(who what arg)
+     (do-raise-argument-error 'raise-argument-error "given" who what #f arg #f)]
+    [(who what pos arg . args)
+     (do-raise-argument-error 'raise-argument-error "given" who what pos arg args)]))
 
 (define raise-result-error
   (case-lambda
