@@ -4987,7 +4987,8 @@
                   [(call ,preinfo ,pr ,e* ...)
                    (guard (eq? (primref-name pr) 'list))
                    (residualize-seq '()  (list ?x) ctxt)
-                   true-rec]))])
+                   true-rec]
+                  [else #f]))])
         
         (define-inline 2 list-assuming-immutable?
           [(?x)
@@ -4995,7 +4996,8 @@
              [(call ,preinfo ,pr ,e* ...)
               (guard (eq? (primref-name pr) 'list))
               (residualize-seq '()  (list ?x) ctxt)
-              true-rec])])
+              true-rec]
+             [else #f])])
 
         (define-inline 2 length
           [(?x)
@@ -5004,7 +5006,8 @@
                   [(call ,preinfo ,pr ,e* ...)
                    (guard (eq? (primref-name pr) 'list))
                    (residualize-seq '()  (list ?x) ctxt)
-                   (build-quote (length e*))]))])
+                   (build-quote (length e*))]
+                  [else #f]))])
         )
 
       (let ()
