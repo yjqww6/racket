@@ -4977,7 +4977,7 @@
                       (guard (eq? (primref-name pr) 'cons))
                       (residualize-seq (list ?x) '() ctxt)
                       (non-result-exp (operand-value ?x)
-                        (make-nontail (maybe-residualize-ref e2 sc)))]
+                        (make-nontail (app-ctxt ctxt) (maybe-residualize-ref e2 sc)))]
                      [else #f]))])])
 
         (define-inline 2 list?
