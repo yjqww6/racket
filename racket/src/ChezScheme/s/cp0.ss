@@ -4938,7 +4938,8 @@
                      [(call ,preinfo ,pr ,e1 ,e2)
                       (guard (eq? (primref-name pr) 'cons))
                       (residualize-seq (list ?x) '() ctxt)
-                      (non-result-exp (operand-value ?x) (make-nontail (app-ctxt ctxt) e1))]
+                      (non-result-exp (operand-value ?x)
+                        (make-nontail (app-ctxt ctxt) (maybe-residualize-ref e1 sc)))]
                      [else
                       (follow-cdr (value-visit-operand! ?x) 0 ctxt (list ?x) '() sc)]))])])
 
@@ -4975,7 +4976,8 @@
                      [(call ,preinfo ,pr ,e1 ,e2)
                       (guard (eq? (primref-name pr) 'cons))
                       (residualize-seq (list ?x) '() ctxt)
-                      (non-result-exp (operand-value ?x) (maybe-residualize-ref e2 sc))]
+                      (non-result-exp (operand-value ?x)
+                        (make-nontail (maybe-residualize-ref e2 sc)))]
                      [else #f]))])])
 
         (define-inline 2 list?
