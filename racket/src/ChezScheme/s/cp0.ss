@@ -87,6 +87,8 @@
   ;;; used to memoize pure?, etc.
   (define-threaded cp0-info-hashtable)
 
+  (define-threaded assuming-pair-immutable #f)
+
   (module ()
     (define-syntax define-cp0-param
       (syntax-rules ()
@@ -109,7 +111,9 @@
     (define-cp0-param cp0-outer-unroll-limit outer-unroll-limit filter-limit)
 
     (define-cp0-param $cp0-inner-unroll-limit inner-unroll-limit filter-limit)
-    (define-cp0-param $cp0-polyvariant polyvariant filter-bool))
+    (define-cp0-param $cp0-polyvariant polyvariant filter-bool)
+
+    (define-cp0-param $cp0-assuming-pair-immutable assuming-pair-immutable filter-bool))
 
   (define (rappend ls1 ls2)
     (if (null? ls1)
@@ -527,6 +531,22 @@
                  [(call ,preinfo (ref ,maybe-src ,x) ,e* ...)
                   (eq? x (car x*))]
                  [else #f])))
+	(define lift-args
+          (lambda (e*)
+            (let f ([e* e*])
+              (cond
+               [(null? e*) (values '() '() '())]
+               [else
+                (let*-values ([(e) (car e*)]
+                              [(liftmt* liftme* e*) (f (cdr e*))])
+                  (if (nanopass-case (Lsrc Expr) e
+                        [(ref ,maybe-src ,x) (prelex-assigned x)]
+                        [(quote ,d) #f]
+                        [,pr (not (all-set? (prim-mask proc) (primref-flags pr)))]
+                        [else #t])
+                      (let ([t (cp0-make-temp #f)])
+                        (values (cons t liftmt*) (cons e liftme*) (cons (build-ref t) e*)))
+                      (values liftmt* liftme* (cons e e*))))]))))
         ; set up to assimilate nested let/letrec/letrec* bindings.
         ; lifting job is completed by cp0-call or letrec/letrec*
         (define (split-value e)
@@ -642,7 +662,23 @@
                        (let ([x* (append liftmt* (list x))] [e* (append liftme* (list e))])
                          (for-each (lambda (x e) (prelex-operand-set! x (build-cooked-opnd e))) x* e*)
                          (values (make-lifted #t x* e*) (build-ref x)))))))]
-            [else (values #f e)]))
+	                [else
+             (cond
+              [assuming-pair-immutable
+               (nanopass-case (Lsrc Expr) e
+                 [(call ,preinfo ,pr ,e* ...)
+                  (guard (memq (primref-name pr) '(cons list list* cons*))
+		         (if (eq? (primref-name pr) 'cons) (fx= (length e*) 2) #t))
+                  (let*-values ([(liftmt* liftme* e*) (lift-args e*)]
+                                [(e) `(call ,preinfo ,pr ,e* ...)])
+                    (cond
+                     [(null? liftmt*) (values #f e)]
+                     [else
+                      (for-each (lambda (x e) (prelex-operand-set! x (build-cooked-opnd e)))
+                                liftmt* liftme*)
+                      (values (make-lifted #t liftmt* liftme*) e)]))]
+                 [else (values #f e)])]
+              [else (values #f e)])]))
         (or (operand-value opnd)
             (let ([sc (new-scorer)])
               (let ([e0 (pending-protect opnd
@@ -2372,28 +2408,41 @@
         [(proc opnd1 . opnds)
          (let ([opnds (cons opnd1 opnds)])
            (let ([last-opnd (car (last-pair opnds))])
+             (define finish-list
+               (lambda (e*)
+                 (let ([opnds (let f ([opnds opnds])
+                                (let ([rest (cdr opnds)])
+                                  (if (null? rest)
+                                      '()
+                                      (cons (car opnds) (f (cdr opnds))))))])
+                   (let ([tproc (cp0-make-temp #f)] [t* (map (lambda (x) (cp0-make-temp #f)) opnds)])
+                     (with-extended-env ((env ids) (empty-env (cons tproc t*) (cons proc opnds)))
+                       (letify (make-preinfo-lambda) ids ctxt (list last-opnd)
+                         (non-result-exp (operand-value last-opnd)
+                           (cp0-call (app-preinfo ctxt) (build-ref tproc)
+                             (fold-right
+                               (lambda (t opnd*) (cons (make-operand (build-ref t) env wd moi) opnd*))
+                               (map build-cooked-opnd e*)
+                               t*)
+                             (app-ctxt ctxt) env sc wd (app-name ctxt) moi))))))))
              (cond
                [(nanopass-case (Lsrc Expr) (result-exp (value-visit-operand! last-opnd))
                   [(quote ,d) (guard (list? d) (<= (length d) 1000)) (map build-quote d)]
                   [(immutable-list (,e* ...) ,e) e*]
                   [(call ,preinfo ,pr ,e* ...) (guard (eq? (primref-name pr) 'list)) e*]
                   [else #f]) =>
+                finish-list]
+	       [(and assuming-pair-immutable
+                     (nanopass-case (Lsrc Expr) (result-exp/indirect-ref (value-visit-operand! last-opnd))
+                       [(quote ,d) (guard (list? d) (<= (length d) 10)) (map build-quote d)]
+                       [(call ,preinfo ,pr ,e* ...) (guard (eq? (primref-name pr) 'list) (<= (length e*) 10)) e*]
+                       [else #f])) =>
                 (lambda (e*)
-                  (let ([opnds (let f ([opnds opnds])
-                                 (let ([rest (cdr opnds)])
-                                   (if (null? rest)
-                                       '()
-                                       (cons (car opnds) (f (cdr opnds))))))])
-                    (let ([tproc (cp0-make-temp #f)] [t* (map (lambda (x) (cp0-make-temp #f)) opnds)])
-                      (with-extended-env ((env ids) (empty-env (cons tproc t*) (cons proc opnds)))
-                        (letify (make-preinfo-lambda) ids ctxt (list last-opnd)
-                          (non-result-exp (operand-value last-opnd)
-                            (cp0-call (app-preinfo ctxt) (build-ref tproc)
-                              (fold-right
-                                (lambda (t opnd*) (cons (make-operand (build-ref t) env wd moi) opnd*))
-                                (map build-cooked-opnd e*)
-                                t*)
-                              (app-ctxt ctxt) env sc wd (app-name ctxt) moi)))))))]
+                  (finish-list (map (lambda (e)
+                                      (nanopass-case (Lsrc Expr) e
+                                        [(ref ,maybe-src ,x) (residualize-ref maybe-src x sc)]
+                                        [else e]))
+                                    e*)))]
                [(nanopass-case (Lsrc Expr) (result-exp (value-visit-operand! last-opnd))
                   [(call ,preinfo ,pr ,e1 ,e2) (guard (eq? (primref-name pr) 'cons)) (list e1 e2)]
                   [(call ,preinfo ,pr ,e ,e* ...) (guard (memq (primref-name pr) '(list* cons*))) (cons e e*)]
@@ -4761,59 +4810,38 @@
                                                       (cdr ls*)) ...))))))))))
                     ctxt empty-env sc wd name moi)))])
 
-      (define-inline 2 car
-        [(?x)
-         (nanopass-case (Lsrc Expr) (result-exp (value-visit-operand! ?x))
-           [(immutable-list (,e* ...) ,e)
-            (and (not (null? e*))
-                 (begin
-                   (residualize-seq '() (list ?x) ctxt)
-                   (make-nontail (app-ctxt ctxt) (car e*))))]
-           [(call ,preinfo ,pr ,e1 ,e2)
-            (guard (eq? (primref-name pr) 'cons))
-            (residualize-seq (list ?x) '() ctxt)
-            (non-result-exp (operand-value ?x)
-              (make-1seq (app-ctxt ctxt) e2 (make-nontail (app-ctxt ctxt) e1)))]
-           [(call ,preinfo ,pr ,e* ...)
-            (guard (memq (primref-name pr) '(list list* cons*)) (not (null? e*)))
-            (residualize-seq (list ?x) '() ctxt)
-            (non-result-exp (operand-value ?x)
-              (fold-right
-                (lambda (e1 e2) (make-1seq (app-ctxt ctxt) e1 e2))
-                (make-nontail (app-ctxt ctxt) (car e*))
-                (cdr e*)))]
-           [else #f])])
-
-      (define-inline 2 cdr
-        [(?x)
-         (nanopass-case (Lsrc Expr) (result-exp (value-visit-operand! ?x))
-           [(immutable-list (,e* ...) ,e)
-            (and (not (null? e*))
-                 (begin
-                   (residualize-seq '() (list ?x) ctxt)
-                   `(immutable-list (,(cdr e*) ...)
-                      ,(build-primcall (app-preinfo ctxt) 3 'cdr
-                         (list e)))))]
-           [(call ,preinfo ,pr ,e1 ,e2)
-            (guard (eq? (primref-name pr) 'cons))
-            (residualize-seq (list ?x) '() ctxt)
-            (non-result-exp (operand-value ?x)
-              (make-1seq (app-ctxt ctxt) e1 (make-nontail (app-ctxt ctxt) e2)))]
-           [(call ,preinfo ,pr ,e* ...)
-            (guard (eq? (primref-name pr) 'list) (not (null? e*)))
-            (residualize-seq (list ?x) '() ctxt)
-            (non-result-exp (operand-value ?x)
-              (make-1seq (app-ctxt ctxt) (car e*)
-                (build-call (app-preinfo ctxt) pr (cdr e*))))]
-           [(call ,preinfo ,pr ,e* ...)
-            (guard (memq (primref-name pr) '(list* cons*)) (>= (length e*) 2))
-            (residualize-seq (list ?x) '() ctxt)
-            (non-result-exp (operand-value ?x)
-              (make-1seq (app-ctxt ctxt) (car e*)
-                (build-call (app-preinfo ctxt) pr (cdr e*))))]
-           [else #f])])
-
       (let ()
+        
+        (define maybe-residualize-ref
+          (lambda (e sc)
+            (nanopass-case (Lsrc Expr) e
+              [(ref ,maybe-src ,x) (residualize-ref maybe-src x sc)]
+              [else e])))
+        
+        (define follow-cdr
+          (lambda (e i ctxt used non-results sc)
+            (let f ([e e] [i i] [non-results non-results] [direct? #t])
+              (nanopass-case (Lsrc Expr) (result-exp e)
+               [(call ,preinfo ,pr ,e1)
+                (guard direct? (eq? (primref-name pr) 'cdr))
+                (f e1 (fx+ i 1) (cons e non-results) direct?)]
+               [else
+                (nanopass-case (Lsrc Expr) (result-exp/indirect-ref e)
+                  [(call ,preinfo ,pr ,e* ...)
+                   (guard (memq (primref-name pr) '(list list* cons*))
+                          (fx> (length e*) (if (eq? (primref-name pr) 'list)
+                                               i
+                                               (fx+ i 1))))
+                   (residualize-seq used '() ctxt)
+                   (fold-left
+                    (lambda (e1 e2) (non-result-exp e2 e1))
+                    (make-nontail (app-ctxt ctxt) (maybe-residualize-ref (list-ref e* i) sc))
+                    non-results)]
+                  [(call ,preinfo ,pr ,e1)
+                   (guard (eq? (primref-name pr) 'cdr))
+                   (f e1 (fx+ i 1) non-results #f)]
+                  [else #f])]))))
+        
         (define doref
           (lambda (ctxt ?x ?i e* d edok?)
             (let ([e (let f ([e* e*] [d d] [ed #f])
@@ -4860,7 +4888,7 @@
           [(?x ?i) (tryref ctxt ?x ?i 'flvector flonum?)])
 
         ; skipping bytevector-u8-ref and bytevector-s8-ref, which generally need to adjust the result.
-
+        
         (define-inline 2 list-ref
           [(?x ?i)
            (nanopass-case (Lsrc Expr) (result-exp (value-visit-operand! ?x))
@@ -4874,7 +4902,108 @@
                           (if (eq? pr 'list) (fx< d n) (fx< d (fx- n 1))))))
                  (doref ctxt ?x ?i e* d true)]
                 [else #f])]
-             [else #f])]))
+             [else
+              (and assuming-pair-immutable
+                   (nanopass-case (Lsrc Expr) (result-exp/indirect-ref (value-visit-operand! ?i))
+                     [(quote ,d)
+                      (guard (fixnum? d) (fx>= d 0))
+                      (follow-cdr (value-visit-operand! ?x) d ctxt (list ?x ?i) (list (operand-value ?i)) sc)]))])])
+
+        
+
+        (define-inline 2 car
+          [(?x)
+           (nanopass-case (Lsrc Expr) (result-exp (value-visit-operand! ?x))
+             [(immutable-list (,e* ...) ,e)
+              (and (not (null? e*))
+                   (begin
+                     (residualize-seq '() (list ?x) ctxt)
+                     (make-nontail (app-ctxt ctxt) (car e*))))]
+             [(call ,preinfo ,pr ,e1 ,e2)
+              (guard (eq? (primref-name pr) 'cons))
+              (residualize-seq (list ?x) '() ctxt)
+              (non-result-exp (operand-value ?x)
+                (make-1seq (app-ctxt ctxt) e2 (make-nontail (app-ctxt ctxt) e1)))]
+             [(call ,preinfo ,pr ,e* ...)
+              (guard (memq (primref-name pr) '(list list* cons*)) (not (null? e*)))
+              (residualize-seq (list ?x) '() ctxt)
+              (non-result-exp (operand-value ?x)
+                (fold-right
+                 (lambda (e1 e2) (make-1seq (app-ctxt ctxt) e1 e2))
+                 (make-nontail (app-ctxt ctxt) (car e*))
+                 (cdr e*)))]
+             [else
+              (and assuming-pair-immutable
+                   (nanopass-case (Lsrc Expr) (result-exp/indirect-ref (value-visit-operand! ?x))
+                     [(call ,preinfo ,pr ,e1 ,e2)
+                      (guard (eq? (primref-name pr) 'cons))
+                      (residualize-seq (list ?x) '() ctxt)
+                      (non-result-exp (operand-value ?x) (make-nontail (app-ctxt ctxt) e1))]
+                     [else
+                      (follow-cdr (value-visit-operand! ?x) 0 ctxt (list ?x) '() sc)]))])])
+
+        (define-inline 2 cdr
+          [(?x)
+           (nanopass-case (Lsrc Expr) (result-exp (value-visit-operand! ?x))
+             [(immutable-list (,e* ...) ,e)
+              (and (not (null? e*))
+                   (begin
+                     (residualize-seq '() (list ?x) ctxt)
+                     `(immutable-list (,(cdr e*) ...)
+                                      ,(build-primcall (app-preinfo ctxt) 3 'cdr
+                                                       (list e)))))]
+             [(call ,preinfo ,pr ,e1 ,e2)
+              (guard (eq? (primref-name pr) 'cons))
+              (residualize-seq (list ?x) '() ctxt)
+              (non-result-exp (operand-value ?x)
+                (make-1seq (app-ctxt ctxt) e1 (make-nontail (app-ctxt ctxt) e2)))]
+             [(call ,preinfo ,pr ,e* ...)
+              (guard (eq? (primref-name pr) 'list) (not (null? e*)))
+              (residualize-seq (list ?x) '() ctxt)
+              (non-result-exp (operand-value ?x)
+                (make-1seq (app-ctxt ctxt) (car e*)
+                  (build-call (app-preinfo ctxt) pr (cdr e*))))]
+             [(call ,preinfo ,pr ,e* ...)
+              (guard (memq (primref-name pr) '(list* cons*)) (>= (length e*) 2))
+              (residualize-seq (list ?x) '() ctxt)
+              (non-result-exp (operand-value ?x)
+                (make-1seq (app-ctxt ctxt) (car e*)
+                  (build-call (app-preinfo ctxt) pr (cdr e*))))]
+             [else
+              (and assuming-pair-immutable
+                   (nanopass-case (Lsrc Expr) (result-exp/indirect-ref (value-visit-operand! ?x))
+                     [(call ,preinfo ,pr ,e1 ,e2)
+                      (guard (eq? (primref-name pr) 'cons))
+                      (residualize-seq (list ?x) '() ctxt)
+                      (non-result-exp (operand-value ?x) (maybe-residualize-ref e2 sc))]
+                     [else #f]))])])
+
+        (define-inline 2 list?
+          [(?x)
+           (and assuming-pair-immutable
+                (nanopass-case (Lsrc Expr) (result-exp/indirect-ref (value-visit-operand! ?x))
+                  [(call ,preinfo ,pr ,e* ...)
+                   (guard (eq? (primref-name pr) 'list))
+                   (residualize-seq '()  (list ?x) ctxt)
+                   true-rec]))])
+        
+        (define-inline 2 list-assuming-immutable?
+          [(?x)
+           (nanopass-case (Lsrc Expr) (result-exp/indirect-ref (value-visit-operand! ?x))
+             [(call ,preinfo ,pr ,e* ...)
+              (guard (eq? (primref-name pr) 'list))
+              (residualize-seq '()  (list ?x) ctxt)
+              true-rec])])
+
+        (define-inline 2 length
+          [(?x)
+           (and assuming-pair-immutable
+                (nanopass-case (Lsrc Expr) (result-exp/indirect-ref (value-visit-operand! ?x))
+                  [(call ,preinfo ,pr ,e* ...)
+                   (guard (eq? (primref-name pr) 'list))
+                   (residualize-seq '()  (list ?x) ctxt)
+                   (build-quote (length e*))]))])
+        )
 
       (let ()
         (define maybe-add-procedure-check
