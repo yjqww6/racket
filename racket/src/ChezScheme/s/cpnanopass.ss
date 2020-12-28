@@ -1514,6 +1514,95 @@
         [else (sorry! who "unhandled expression ~s" ir)])
       (begin (CaseLambdaExpr ir) ir))
 
+    (define-pass np-commonize-record-check : L4 (ir) -> L4 ()
+      (definitions
+        (define (ok-to-merge? ir)
+          (nanopass-case (L4 Expr) ir
+            [(call ,info ,pr ,x ,e)
+             (guard (eq? (primref-name pr) 'record?))
+             (nanopass-case (L4 Expr) e
+               [,x #t]
+               [(quote ,d) #t]
+               [else #f])]
+            [,x #t]
+            [else #f]))
+        
+        (define (same? a b)
+          (nanopass-case (L4 Expr) a
+            [(call ,info0 ,pr0 ,x0 ,x1)
+             (nanopass-case (L4 Expr) b
+               [(call ,info1 ,pr1 ,x3 ,x4)
+                (and (eq? (primref-level pr0) (primref-level pr1))
+                     (eq? x0 x3) (eq? x1 x4))]
+               [else #f])]
+            [(call ,info ,pr0 ,x0 (quote ,d0))
+             (nanopass-case (L4 Expr) b
+               [(call ,info2 ,pr1 ,x1 (quote ,d1))
+                (and (eq? (primref-level pr0) (primref-level pr1))
+                     (eq? x0 x1) (eq? d0 d1))]
+               [else #f])]
+            [,x (eq? a b)]
+            [else #f]))
+
+        (define rename
+          (case-lambda
+            [(rename-info)
+             (lambda (x) (rename rename-info x))]
+            [(rename-info x)
+             (cond
+              [(assq x rename-info) => cdr]
+              [else x])]))
+
+        (define (build-let rx* rx** re** rename-info)
+          (let* ([rt* (map (lambda (x) (make-tmp (uvar-name x))) rx*)]
+                 [rename-info (append (map (lambda (x t) (cons x t)) rx* rt*)
+                                      rename-info)])
+            (with-output-language (L4 Expr)
+              (let f ([rx** rx**] [re** re**]
+                      [body `(call ,(make-info-call #f #f #f #f #f) ,(lookup-primref 3 'values)
+                                   ,rt* ...)])
+                (cond
+                 [(null? rx**) body]
+                 [else
+                  (f (cdr rx**) (cdr re**)
+                     `(let ([,(map (rename rename-info) (car rx**))
+                             ,(map (lambda (e) (Expr e rename-info)) (car re**))] ...)
+                        ,body))])))))
+        )
+      (ExprCheck : Expr (ir rename-info e0 rx** re1** re2**) -> Expr ()
+        [(let ([,[Expr : x* rename-info -> x*]
+                (if ,[Expr : e0* rename-info -> e0*] ,e1* ,e2*)] ...) ,body)
+         (guard (and (fx> (length x*) 0) (ok-to-merge? (car e0*))
+                     (andmap (lambda (e) (same? e0 e)) e0*)))
+         (ExprCheck body rename-info
+           e0
+           (cons x* rx**)
+           (cons e1* re1**)
+           (cons e2* re2**))]
+        [else
+         (let* ([rx* (apply append rx**)]
+                [n (length rx*)])
+           `(call ,(make-info-call #f #f #f #f #f) ,(lookup-primref 3 'call-with-values)
+                  (case-lambda
+                    ,(make-info-lambda #f #f #f '(0))
+                    (clause () ,0
+                            (if ,e0
+                                ,(build-let rx* rx** re1** rename-info)
+                                ,(build-let rx* rx** re2** rename-info))))
+                  (case-lambda
+                    ,(make-info-lambda #f #f #f (list n))
+                    (clause (,rx* ...) ,n ,(Expr ir rename-info)))))])
+      (Expr : Expr (ir rename-info) -> Expr ()
+        [,x (rename rename-info x)]
+        [(let ([,x* (if ,[Expr : e0* rename-info -> e0*] ,e1* ,e2*)] ...) ,body)
+         (guard (and (fx> (length x*) 0) (ok-to-merge? (car e0*))
+                     (andmap (lambda (e) (same? (car e0*) e)) (cdr e0*))))
+         (ExprCheck body rename-info (car e0*) (list x*) (list e1*) (list e2*))])
+      (CaseLambdaExpr : CaseLambdaExpr (ir rename-info) -> CaseLambdaExpr ())
+      (CaseLambdaClause : CaseLambdaClause (ir rename-info) -> CaseLambdaClause ())
+      
+      (CaseLambdaExpr ir '()))
+
     (define-pass np-recognize-mrvs : L4 (ir) -> L4.5 ()
       (definitions
         (define insert-procedure-check
@@ -19115,6 +19204,7 @@
               (pass np-convert-assignments unparse-L4)
               (pass np-sanitize-bindings unparse-L4)
               (pass np-suppress-procedure-checks unparse-L4)
+              (pass np-commonize-record-check unparse-L4)
               (pass np-recognize-mrvs unparse-L4.5)
               (pass np-expand-foreign unparse-L4.75)
               (pass np-recognize-loops unparse-L4.875)
