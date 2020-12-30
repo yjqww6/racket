@@ -547,6 +547,14 @@
             [(call ,preinfo0 (case-lambda ,preinfo1 (clause (,x* ...) ,interface ,body)) ,e* ...)
              (guard (fx= interface (length e*)))
              (cond
+               [(and can-lift? (fx= interface 1))
+                (let loop ([body body] [rx* x*] [re* e*])
+                  (nanopass-case (Lsrc Expr) body
+                    [(call ,preinfo (case-lambda ,preinfo1 (clause (,x) ,interface ,body)) ,e)
+                     (loop body (cons x rx*) (cons e re*))]
+                    [else
+                     (for-each (lambda (x e) (prelex-operand-set! x (build-cooked-opnd e))) rx* re*)
+                     (values (make-lifted (not (eq? x* rx*)) (reverse rx*) (reverse re*)) body)]))]
                ; when lifting all assimilated let bindings, require each RHS to be
                ; simple, since they are treated as letrec/letrec* bindings, which does
                ; not preserve let semantics wrt continuation grabs in RHS expressions.
@@ -5232,6 +5240,10 @@
             (make-1seq* 'ignored (list e1 e3))]
            [else
             `(call ,preinfo ,pr ,e1 ,e2 ,e3)]))]
+      [(call ,preinfo0 (case-lambda ,preinfo1 (clause (,x) ,interface ,body))
+             (seq ,e0 ,e1))
+       (cp0 `(seq ,e0 (call ,preinfo0 (case-lambda ,preinfo1 (clause (,x) ,interface ,body)) ,e1))
+            ctxt env sc wd name moi)]
       [(call ,preinfo ,e ,e* ...)
        (let ()
          (define lift-let

@@ -8858,9 +8858,10 @@
                        (new q x)))))))
            (make-foo 3))))
     `(let ([ctr 0])
-       (letrec ([g0 (lambda (new) (lambda (q) (new q (begin (set! ctr (#2%+ 1 xtr)) ctr))))])
+       (letrec ([g0 (lambda (new) (lambda (q) (set! ctr (#2%+ 1 xtr)) (new q ctr)))])
          (#3%$value (#3%$make-record-constructor-descriptor ',record-type-descriptor?  #f g0 'define-record-type))
-         (#3%$record ',record-type-descriptor? 3 (begin (set! ctr (#2%+ 1 xtr)) ctr)))))
+         (set! ctr (#2%+ 1 xtr))
+         (#3%$record ',record-type-descriptor? 3 ctr))))
   (equivalent-expansion?
     (parameterize ([optimize-level 3] [enable-cp0 #t] [#%$suppress-primitive-inlining #f])
       (expand/optimize
@@ -8877,9 +8878,10 @@
                        (new q x)))))))
            (make-foo 3))))
     `(let ([ctr 0])
-       (letrec ([g0 (lambda (new) (lambda (q) (new q (begin (set! ctr (#3%+ 1 xtr)) ctr))))])
+       (letrec ([g0 (lambda (new) (lambda (q) (set! ctr (#3%+ 1 xtr)) (new q ctr)))])
          (#3%$value (#3%$make-record-constructor-descriptor ',record-type-descriptor?  #f g0 'define-record-type))
-         (#3%$record ',record-type-descriptor? 3 (begin (set! ctr (#3%+ 1 xtr)) ctr)))))
+         (set! ctr (#3%+ 1 xtr))
+         (#3%$record ',record-type-descriptor? 3 ctr))))
   (error? ; invalid uid
     (let ()
       (define useless
@@ -9078,10 +9080,9 @@
         '(let ()
            (define-record mybox (val))
            (display (mybox-val (begin (display 1) (make-mybox 2)))))))
-    '(#2%display
-      (begin
-        (#2%display 1)
-        2)))
+    '(begin
+       (#2%display 1)
+       (#2%display 2)))
   (eq? (let ()
          (define-record kons (kar kdr))
          (kons-kar (make-kons 'a 'b)))
@@ -9118,13 +9119,12 @@
           (define-record kons (kar kdr))
           (display (kons-kar (make-kons (begin (display 1) (display 2) 3)
                                         (begin (display 4) (display 5) 6)))))))
-    '(#2%display
-      (begin
-        (#2%display 4)
-        (#2%display 5)
-        (#2%display 1)
-        (#2%display 2)
-        3)))
+    '(begin
+       (#2%display 4)
+       (#2%display 5)
+       (#2%display 1)
+       (#2%display 2)
+       (#2%display 3)))
   (member?
     (with-output-to-string
       (lambda ()
@@ -9139,13 +9139,12 @@
           (define-record kons (kar kdr))
           (display (kons-kdr (make-kons (begin (display 1) (display 2) 3)
                                         (begin (display 4) (display 5) 6)))))))
-    '(#2%display
-      (begin
+    '(begin
         (#2%display 4)
         (#2%display 5)
         (#2%display 1)
         (#2%display 2)
-        6)))
+        (#2%display 6)))
   (equal?
     (with-output-to-string
       (lambda ()
@@ -9189,8 +9188,7 @@
             (#2%display
              (begin
                (#2%display 4)
-               1)))))
-)
+               1))))))
 
 (mat cp0-$record-ref
   (equivalent-expansion?
