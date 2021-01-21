@@ -60,10 +60,12 @@
        [else (correlate~ s `(quote unused-case-lambda))])]
      [(parsed-app? p)
       (define rands (parsed-app-rands p))
-      (correlate/app s (cons
-                        (compile (parsed-app-rator p) #f #t)
-                        (for/list ([r (in-list rands)])
-                          (compile r #f #t))))]
+      (propagate-no-inline-property
+       (correlate/app s (cons
+                         (compile (parsed-app-rator p) #f #t)
+                         (for/list ([r (in-list rands)])
+                           (compile r #f #t))))
+       s)]
      [(parsed-if? p)
       (define tst-e (compile (parsed-if-tst p) #f #f))
       ;; Ad hoc optimization of `(if #t ... ...)` or `(if #f ... ...)`
@@ -243,3 +245,9 @@
     (generate-lazy-syntax-literal-lookup pos)]
    [else
     (generate-eager-syntax-literal-lookup pos)]))
+
+(define (propagate-no-inline-property e orig-s)
+  (define v (and orig-s (syntax-property orig-s 'compiler-hint:app-no-inline)))
+  (if v
+      (correlated-property (->correlated e) 'compiler-hint:app-no-inline v)
+      e))

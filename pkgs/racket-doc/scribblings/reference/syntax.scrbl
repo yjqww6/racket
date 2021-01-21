@@ -3028,6 +3028,20 @@ which has fewer dependencies than @racketmodname[racket/performance-hint].
 @history[#:changed "6.2" @elem{Added the @racketmodname[(submod racket/performance-hint begin-encourage-inline)] submodule.}]
 }
 
+@defform[(app-discourage-inline form ...)]{
+
+Expands to @racket[(form ...)] with @racket['compiler-hint:app-no-inline]
+@tech{syntax property} attached, which is useful when @racket[(form ...)]
+is a procedure application. In that case the compiler may prefer not to inline
+the application.
+
+The @racket[app-discourage-inline] form is also provide by the
+@racketmodname[(submod racket/performance-hint app-discourage-inline)] module,
+which has fewer dependencies than @racketmodname[racket/performance-hint].
+
+@history[#:added "8.0.0.1"]
+}
+
 @defform*/subs[[(define-inline id expr)
                 (define-inline (head args) body ...+)]
                 ([head id

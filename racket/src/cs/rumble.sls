@@ -148,6 +148,7 @@
           |#%call-with-values|
           |#%app/no-return|
           |#%app/value|
+          |#%app/no-inline|
           extract-procedure ; not exported to Racket
           procedure-arity-includes?
           procedure-arity

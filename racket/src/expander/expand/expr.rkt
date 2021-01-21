@@ -430,7 +430,8 @@
           (list (core-id 'quote phase)
                 null)))]
     [else
-     (define keep-for-parsed? keep-source-locations?)
+     (define keep-for-parsed? (or keep-source-locations?
+                                  (syntax-property s 'compiler-hint:app-no-inline)))
      (define rebuild-s (keep-as-needed ctx s #:keep-for-parsed? keep-for-parsed?))
      (define prefixless (cdr (syntax-e disarmed-s)))
      (define rebuild-prefixless (and (syntax? prefixless)

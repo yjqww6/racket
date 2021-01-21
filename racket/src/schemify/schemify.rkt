@@ -896,8 +896,10 @@
                            (wrap-tmp tmp-rhs (cadr args)
                                      mut))]
                 [else #f]))
+            (define no-inline? (wrap-property v 'compiler-hint:app-no-inline))
             (or (left-left-lambda-convert rator inline-fuel)
                 (and (positive? inline-fuel)
+                     (not no-inline?)
                      (inline-rator))
                 (let ([s-rator (schemify rator 'fresh)]
                       [args (schemify-body exps 'fresh)]
@@ -957,7 +959,9 @@
                                            '#%app/value]
                                           [(or (known-procedure? k)
                                                (lambda? rator))
-                                           #f]
+                                           (if no-inline?
+                                               '#%app/no-inline
+                                               #f)]
                                           [else '|#%app|])
                                         target
                                         prim-knowns knowns imports mutated simples unsafe-mode?)])))]

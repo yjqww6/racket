@@ -3,11 +3,16 @@
 (require "private/performance-hint.rkt")
 
 (provide begin-encourage-inline
+         app-discourage-inline
          define-inline)
 
 (module begin-encourage-inline '#%kernel
   (#%require "private/performance-hint.rkt")
   (#%provide begin-encourage-inline))
+
+(module app-discourage-inline '#%kernel
+  (#%require "private/performance-hint.rkt")
+  (#%provide app-discourage-inline))
 
 (require (for-syntax syntax/parse syntax/define
                      racket/syntax racket/base)

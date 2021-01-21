@@ -74,6 +74,7 @@
                #%app
                #%call-with-values
                #%app/no-return
+               #%app/no-inline
                #%app/value
                call-with-module-prompt
                make-pthread-parameter

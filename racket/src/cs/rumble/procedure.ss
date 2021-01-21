@@ -86,6 +86,11 @@
     [(_ rator rand ...)
      #'(#3%$app/value rator rand ...)]))
 
+(define-syntax (|#%app/no-inline| stx)
+  (syntax-case stx ()
+    [(_ rator rand ...)
+     #'(#3%$app/no-inline rator rand ...)]))
+
 (define-syntax-rule (extract-procedure f n-args)
   (let ([tmp f])
     (if (#%procedure? tmp)

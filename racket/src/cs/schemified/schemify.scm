@@ -29974,218 +29974,227 @@
                                                                                                                                            args_0)
                                                                                                                                           mut_0))))))
                                                                                                                                 #f)))))))
-                                                                                                                  (let ((or-part_0
-                                                                                                                         (left-left-lambda-convert_0
-                                                                                                                          rator_0
-                                                                                                                          inline-fuel_0)))
-                                                                                                                    (if or-part_0
-                                                                                                                      or-part_0
-                                                                                                                      (let ((or-part_1
-                                                                                                                             (if (positive?
-                                                                                                                                  inline-fuel_0)
-                                                                                                                               (inline-rator_0)
-                                                                                                                               #f)))
-                                                                                                                        (if or-part_1
-                                                                                                                          or-part_1
-                                                                                                                          (let ((s-rator_0
-                                                                                                                                 (schemify_0
-                                                                                                                                  rator_0
-                                                                                                                                  'fresh)))
-                                                                                                                            (let ((args_0
-                                                                                                                                   (schemify-body_0
-                                                                                                                                    exps_0
+                                                                                                                  (let ((no-inline?_0
+                                                                                                                         (wrap-property
+                                                                                                                          v_2
+                                                                                                                          'compiler-hint:app-no-inline)))
+                                                                                                                    (let ((or-part_0
+                                                                                                                           (left-left-lambda-convert_0
+                                                                                                                            rator_0
+                                                                                                                            inline-fuel_0)))
+                                                                                                                      (if or-part_0
+                                                                                                                        or-part_0
+                                                                                                                        (let ((or-part_1
+                                                                                                                               (if (positive?
+                                                                                                                                    inline-fuel_0)
+                                                                                                                                 (if (not
+                                                                                                                                      no-inline?_0)
+                                                                                                                                   (inline-rator_0)
+                                                                                                                                   #f)
+                                                                                                                                 #f)))
+                                                                                                                          (if or-part_1
+                                                                                                                            or-part_1
+                                                                                                                            (let ((s-rator_0
+                                                                                                                                   (schemify_0
+                                                                                                                                    rator_0
                                                                                                                                     'fresh)))
-                                                                                                                              (let ((u-rator_0
-                                                                                                                                     (unwrap
-                                                                                                                                      rator_0)))
-                                                                                                                                (let ((args_1
-                                                                                                                                       args_0)
-                                                                                                                                      (s-rator_1
-                                                                                                                                       s-rator_0))
-                                                                                                                                  (call-with-values
-                                                                                                                                   (lambda ()
-                                                                                                                                     (find-known+import
-                                                                                                                                      u-rator_0
-                                                                                                                                      prim-knowns_0
-                                                                                                                                      knowns_1
-                                                                                                                                      imports_0
-                                                                                                                                      mutated_0))
-                                                                                                                                   (case-lambda
-                                                                                                                                    ((k_0
-                                                                                                                                      im_0)
-                                                                                                                                     (let ((c6_0
-                                                                                                                                            (let ((or-part_2
-                                                                                                                                                   (if (eq?
-                                                                                                                                                        rator_0
-                                                                                                                                                        'ptr-ref)
-                                                                                                                                                     (inline-ptr-ref
-                                                                                                                                                      args_1)
-                                                                                                                                                     #f)))
-                                                                                                                                              (if or-part_2
-                                                                                                                                                or-part_2
-                                                                                                                                                (if (eq?
-                                                                                                                                                     rator_0
-                                                                                                                                                     'ptr-set!)
-                                                                                                                                                  (inline-ptr-set
-                                                                                                                                                   args_1)
-                                                                                                                                                  #f)))))
-                                                                                                                                       (if c6_0
-                                                                                                                                         (let ((app_0
-                                                                                                                                                (car
-                                                                                                                                                 c6_0)))
-                                                                                                                                           (left-to-right/app
-                                                                                                                                            app_0
-                                                                                                                                            (cdr
-                                                                                                                                             c6_0)
-                                                                                                                                            #f
-                                                                                                                                            target_0
-                                                                                                                                            prim-knowns_0
-                                                                                                                                            knowns_1
-                                                                                                                                            imports_0
-                                                                                                                                            mutated_0
-                                                                                                                                            simples_0
-                                                                                                                                            unsafe-mode?_0))
-                                                                                                                                         (let ((c5_0
-                                                                                                                                                (if (not
-                                                                                                                                                     (let ((or-part_2
-                                                                                                                                                            (eq?
-                                                                                                                                                             target_0
-                                                                                                                                                             'cify)))
-                                                                                                                                                       (if or-part_2
-                                                                                                                                                         or-part_2
-                                                                                                                                                         (eq?
-                                                                                                                                                          target_0
-                                                                                                                                                          'system))))
-                                                                                                                                                  (if (known-struct-constructor?
-                                                                                                                                                       k_0)
-                                                                                                                                                    (inline-struct-constructor_0
-                                                                                                                                                     k_0
-                                                                                                                                                     s-rator_1
-                                                                                                                                                     im_0
+                                                                                                                              (let ((args_0
+                                                                                                                                     (schemify-body_0
+                                                                                                                                      exps_0
+                                                                                                                                      'fresh)))
+                                                                                                                                (let ((u-rator_0
+                                                                                                                                       (unwrap
+                                                                                                                                        rator_0)))
+                                                                                                                                  (let ((args_1
+                                                                                                                                         args_0)
+                                                                                                                                        (s-rator_1
+                                                                                                                                         s-rator_0))
+                                                                                                                                    (call-with-values
+                                                                                                                                     (lambda ()
+                                                                                                                                       (find-known+import
+                                                                                                                                        u-rator_0
+                                                                                                                                        prim-knowns_0
+                                                                                                                                        knowns_1
+                                                                                                                                        imports_0
+                                                                                                                                        mutated_0))
+                                                                                                                                     (case-lambda
+                                                                                                                                      ((k_0
+                                                                                                                                        im_0)
+                                                                                                                                       (let ((c6_0
+                                                                                                                                              (let ((or-part_2
+                                                                                                                                                     (if (eq?
+                                                                                                                                                          rator_0
+                                                                                                                                                          'ptr-ref)
+                                                                                                                                                       (inline-ptr-ref
+                                                                                                                                                        args_1)
+                                                                                                                                                       #f)))
+                                                                                                                                                (if or-part_2
+                                                                                                                                                  or-part_2
+                                                                                                                                                  (if (eq?
+                                                                                                                                                       rator_0
+                                                                                                                                                       'ptr-set!)
+                                                                                                                                                    (inline-ptr-set
                                                                                                                                                      args_1)
-                                                                                                                                                    #f)
-                                                                                                                                                  #f)))
-                                                                                                                                           (if c5_0
-                                                                                                                                             c5_0
-                                                                                                                                             (let ((c4_0
-                                                                                                                                                    (if (not
-                                                                                                                                                         (let ((or-part_2
-                                                                                                                                                                (eq?
-                                                                                                                                                                 target_0
-                                                                                                                                                                 'cify)))
-                                                                                                                                                           (if or-part_2
-                                                                                                                                                             or-part_2
-                                                                                                                                                             (eq?
-                                                                                                                                                              target_0
-                                                                                                                                                              'system))))
-                                                                                                                                                      (if (known-struct-predicate?
-                                                                                                                                                           k_0)
-                                                                                                                                                        (inline-struct-predicate_0
-                                                                                                                                                         k_0
-                                                                                                                                                         s-rator_1
-                                                                                                                                                         im_0
-                                                                                                                                                         args_1)
-                                                                                                                                                        #f)
-                                                                                                                                                      #f)))
-                                                                                                                                               (if c4_0
-                                                                                                                                                 c4_0
-                                                                                                                                                 (let ((c3_0
-                                                                                                                                                        (if (not
-                                                                                                                                                             (let ((or-part_2
-                                                                                                                                                                    (eq?
-                                                                                                                                                                     target_0
-                                                                                                                                                                     'cify)))
-                                                                                                                                                               (if or-part_2
-                                                                                                                                                                 or-part_2
-                                                                                                                                                                 (eq?
-                                                                                                                                                                  target_0
-                                                                                                                                                                  'system))))
-                                                                                                                                                          (if (known-field-accessor?
-                                                                                                                                                               k_0)
-                                                                                                                                                            (inline-field-access_0
-                                                                                                                                                             k_0
-                                                                                                                                                             s-rator_1
-                                                                                                                                                             im_0
-                                                                                                                                                             args_1)
-                                                                                                                                                            #f)
-                                                                                                                                                          #f)))
-                                                                                                                                                   (if c3_0
-                                                                                                                                                     c3_0
-                                                                                                                                                     (let ((c2_0
-                                                                                                                                                            (if (not
-                                                                                                                                                                 (let ((or-part_2
-                                                                                                                                                                        (eq?
-                                                                                                                                                                         target_0
-                                                                                                                                                                         'cify)))
-                                                                                                                                                                   (if or-part_2
-                                                                                                                                                                     or-part_2
-                                                                                                                                                                     (eq?
-                                                                                                                                                                      target_0
-                                                                                                                                                                      'system))))
-                                                                                                                                                              (if (known-field-mutator?
-                                                                                                                                                                   k_0)
-                                                                                                                                                                (inline-field-mutate_0
-                                                                                                                                                                 k_0
-                                                                                                                                                                 s-rator_1
-                                                                                                                                                                 im_0
-                                                                                                                                                                 args_1)
-                                                                                                                                                                #f)
-                                                                                                                                                              #f)))
-                                                                                                                                                       (if c2_0
-                                                                                                                                                         c2_0
-                                                                                                                                                         (if (if unsafe-mode?_0
-                                                                                                                                                               (known-procedure/has-unsafe?
-                                                                                                                                                                k_0)
-                                                                                                                                                               #f)
-                                                                                                                                                           (left-to-right/app
-                                                                                                                                                            (known-procedure/has-unsafe-alternate
-                                                                                                                                                             k_0)
-                                                                                                                                                            args_1
-                                                                                                                                                            #f
+                                                                                                                                                    #f)))))
+                                                                                                                                         (if c6_0
+                                                                                                                                           (let ((app_0
+                                                                                                                                                  (car
+                                                                                                                                                   c6_0)))
+                                                                                                                                             (left-to-right/app
+                                                                                                                                              app_0
+                                                                                                                                              (cdr
+                                                                                                                                               c6_0)
+                                                                                                                                              #f
+                                                                                                                                              target_0
+                                                                                                                                              prim-knowns_0
+                                                                                                                                              knowns_1
+                                                                                                                                              imports_0
+                                                                                                                                              mutated_0
+                                                                                                                                              simples_0
+                                                                                                                                              unsafe-mode?_0))
+                                                                                                                                           (let ((c5_0
+                                                                                                                                                  (if (not
+                                                                                                                                                       (let ((or-part_2
+                                                                                                                                                              (eq?
+                                                                                                                                                               target_0
+                                                                                                                                                               'cify)))
+                                                                                                                                                         (if or-part_2
+                                                                                                                                                           or-part_2
+                                                                                                                                                           (eq?
                                                                                                                                                             target_0
-                                                                                                                                                            prim-knowns_0
-                                                                                                                                                            knowns_1
-                                                                                                                                                            imports_0
-                                                                                                                                                            mutated_0
-                                                                                                                                                            simples_0
-                                                                                                                                                            unsafe-mode?_0)
-                                                                                                                                                           (left-to-right/app
-                                                                                                                                                            s-rator_1
-                                                                                                                                                            args_1
-                                                                                                                                                            (if (if (not
-                                                                                                                                                                     (eq?
-                                                                                                                                                                      target_0
-                                                                                                                                                                      'system))
-                                                                                                                                                                  (known-procedure/no-return?
-                                                                                                                                                                   k_0)
+                                                                                                                                                            'system))))
+                                                                                                                                                    (if (known-struct-constructor?
+                                                                                                                                                         k_0)
+                                                                                                                                                      (inline-struct-constructor_0
+                                                                                                                                                       k_0
+                                                                                                                                                       s-rator_1
+                                                                                                                                                       im_0
+                                                                                                                                                       args_1)
+                                                                                                                                                      #f)
+                                                                                                                                                    #f)))
+                                                                                                                                             (if c5_0
+                                                                                                                                               c5_0
+                                                                                                                                               (let ((c4_0
+                                                                                                                                                      (if (not
+                                                                                                                                                           (let ((or-part_2
+                                                                                                                                                                  (eq?
+                                                                                                                                                                   target_0
+                                                                                                                                                                   'cify)))
+                                                                                                                                                             (if or-part_2
+                                                                                                                                                               or-part_2
+                                                                                                                                                               (eq?
+                                                                                                                                                                target_0
+                                                                                                                                                                'system))))
+                                                                                                                                                        (if (known-struct-predicate?
+                                                                                                                                                             k_0)
+                                                                                                                                                          (inline-struct-predicate_0
+                                                                                                                                                           k_0
+                                                                                                                                                           s-rator_1
+                                                                                                                                                           im_0
+                                                                                                                                                           args_1)
+                                                                                                                                                          #f)
+                                                                                                                                                        #f)))
+                                                                                                                                                 (if c4_0
+                                                                                                                                                   c4_0
+                                                                                                                                                   (let ((c3_0
+                                                                                                                                                          (if (not
+                                                                                                                                                               (let ((or-part_2
+                                                                                                                                                                      (eq?
+                                                                                                                                                                       target_0
+                                                                                                                                                                       'cify)))
+                                                                                                                                                                 (if or-part_2
+                                                                                                                                                                   or-part_2
+                                                                                                                                                                   (eq?
+                                                                                                                                                                    target_0
+                                                                                                                                                                    'system))))
+                                                                                                                                                            (if (known-field-accessor?
+                                                                                                                                                                 k_0)
+                                                                                                                                                              (inline-field-access_0
+                                                                                                                                                               k_0
+                                                                                                                                                               s-rator_1
+                                                                                                                                                               im_0
+                                                                                                                                                               args_1)
+                                                                                                                                                              #f)
+                                                                                                                                                            #f)))
+                                                                                                                                                     (if c3_0
+                                                                                                                                                       c3_0
+                                                                                                                                                       (let ((c2_0
+                                                                                                                                                              (if (not
+                                                                                                                                                                   (let ((or-part_2
+                                                                                                                                                                          (eq?
+                                                                                                                                                                           target_0
+                                                                                                                                                                           'cify)))
+                                                                                                                                                                     (if or-part_2
+                                                                                                                                                                       or-part_2
+                                                                                                                                                                       (eq?
+                                                                                                                                                                        target_0
+                                                                                                                                                                        'system))))
+                                                                                                                                                                (if (known-field-mutator?
+                                                                                                                                                                     k_0)
+                                                                                                                                                                  (inline-field-mutate_0
+                                                                                                                                                                   k_0
+                                                                                                                                                                   s-rator_1
+                                                                                                                                                                   im_0
+                                                                                                                                                                   args_1)
                                                                                                                                                                   #f)
-                                                                                                                                                              '|#%app/no-return|
-                                                                                                                                                              (if (if im_0
-                                                                                                                                                                    (known-procedure/single-valued?
+                                                                                                                                                                #f)))
+                                                                                                                                                         (if c2_0
+                                                                                                                                                           c2_0
+                                                                                                                                                           (if (if unsafe-mode?_0
+                                                                                                                                                                 (known-procedure/has-unsafe?
+                                                                                                                                                                  k_0)
+                                                                                                                                                                 #f)
+                                                                                                                                                             (left-to-right/app
+                                                                                                                                                              (known-procedure/has-unsafe-alternate
+                                                                                                                                                               k_0)
+                                                                                                                                                              args_1
+                                                                                                                                                              #f
+                                                                                                                                                              target_0
+                                                                                                                                                              prim-knowns_0
+                                                                                                                                                              knowns_1
+                                                                                                                                                              imports_0
+                                                                                                                                                              mutated_0
+                                                                                                                                                              simples_0
+                                                                                                                                                              unsafe-mode?_0)
+                                                                                                                                                             (left-to-right/app
+                                                                                                                                                              s-rator_1
+                                                                                                                                                              args_1
+                                                                                                                                                              (if (if (not
+                                                                                                                                                                       (eq?
+                                                                                                                                                                        target_0
+                                                                                                                                                                        'system))
+                                                                                                                                                                    (known-procedure/no-return?
                                                                                                                                                                      k_0)
                                                                                                                                                                     #f)
-                                                                                                                                                                '|#%app/value|
-                                                                                                                                                                (if (let ((or-part_2
-                                                                                                                                                                           (known-procedure?
-                                                                                                                                                                            k_0)))
-                                                                                                                                                                      (if or-part_2
-                                                                                                                                                                        or-part_2
-                                                                                                                                                                        (lambda?.1
-                                                                                                                                                                         #f
-                                                                                                                                                                         rator_0)))
-                                                                                                                                                                  #f
-                                                                                                                                                                  '|#%app|)))
-                                                                                                                                                            target_0
-                                                                                                                                                            prim-knowns_0
-                                                                                                                                                            knowns_1
-                                                                                                                                                            imports_0
-                                                                                                                                                            mutated_0
-                                                                                                                                                            simples_0
-                                                                                                                                                            unsafe-mode?_0)))))))))))))
-                                                                                                                                    (args
-                                                                                                                                     (raise-binding-result-arity-error
-                                                                                                                                      2
-                                                                                                                                      args)))))))))))))))))))))
+                                                                                                                                                                '|#%app/no-return|
+                                                                                                                                                                (if (if im_0
+                                                                                                                                                                      (known-procedure/single-valued?
+                                                                                                                                                                       k_0)
+                                                                                                                                                                      #f)
+                                                                                                                                                                  '|#%app/value|
+                                                                                                                                                                  (if (let ((or-part_2
+                                                                                                                                                                             (known-procedure?
+                                                                                                                                                                              k_0)))
+                                                                                                                                                                        (if or-part_2
+                                                                                                                                                                          or-part_2
+                                                                                                                                                                          (lambda?.1
+                                                                                                                                                                           #f
+                                                                                                                                                                           rator_0)))
+                                                                                                                                                                    (if no-inline?_0
+                                                                                                                                                                      '|#%app/no-inline|
+                                                                                                                                                                      #f)
+                                                                                                                                                                    '|#%app|)))
+                                                                                                                                                              target_0
+                                                                                                                                                              prim-knowns_0
+                                                                                                                                                              knowns_1
+                                                                                                                                                              imports_0
+                                                                                                                                                              mutated_0
+                                                                                                                                                              simples_0
+                                                                                                                                                              unsafe-mode?_0)))))))))))))
+                                                                                                                                      (args
+                                                                                                                                       (raise-binding-result-arity-error
+                                                                                                                                        2
+                                                                                                                                        args))))))))))))))))))))))
                                                                                                   (args
                                                                                                    (raise-binding-result-arity-error
                                                                                                     2
