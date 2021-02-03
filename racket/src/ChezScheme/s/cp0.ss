@@ -977,7 +977,7 @@
 
     ;; Returns #f if the clause is not externally inlinable
     (define externally-inlinable
-      (lambda (clause exts)
+      (lambda (clause exts x0)
         (call/cc
          (lambda (exit)
             (define bump!
@@ -996,7 +996,7 @@
             (define (ids->do-clause ids)
               (rec do-clause
                 (lambda (clause)
-                  (define (ids->do-expr ids)
+                  (define (ids->do-expr ids interface)
                     (rec do-expr
                       (lambda (e)
                         (nanopass-case (Lsrc Expr) e
@@ -1019,6 +1019,19 @@
                            (unless (memq x ids) (exit #f))
                            (bump!)
                            (do-expr e)]
+                          [(call ,preinfo (ref ,maybe-src ,x) ,e* ...)
+                           (guard (and (eq? x x0) (preinfo-call-can-inline? preinfo)
+                                       (fx>= interface 0) (fx> (length e*) interface)))
+                           (cond
+                            [(and (not (prelex-was-assigned x))
+                                  (find-ext x))
+                             => (lambda (label)
+                                  (bump!)
+                                  `(call ,preinfo
+                                         ,(let ([preinfo (make-preinfo-call #f #f (preinfo-call-mask unchecked))])
+                                            (build-primcall preinfo 3 '$top-level-value (list `(quote ,label))))
+                                         ,(map do-expr e*) ...))]
+                            [else (exit #f)])]
                           [(call ,preinfo ,e ,e* ...)
                            ; reject calls to gensyms, since they might represent library exports,
                            ; and we have no way to set up the required invoke dependencies, unless
@@ -1038,12 +1051,12 @@
                           [(letrec ([,x* ,e*] ...) ,body)
                            (bump!)
                            (safe-assert (andmap (lambda (x) (not (prelex-operand x))) x*))
-                           (let ([do-expr (ids->do-expr (append x* ids))])
+                           (let ([do-expr (ids->do-expr (append x* ids) interface)])
                              `(letrec ([,x* ,(map do-expr e*)] ...) ,(do-expr body)))]
                           [(letrec* ([,x* ,e*] ...) ,body)
                            (bump!)
                            (safe-assert (andmap (lambda (x) (not (prelex-operand x))) x*))
-                           (let ([do-expr (ids->do-expr (append x* ids))])
+                           (let ([do-expr (ids->do-expr (append x* ids) interface)])
                              `(letrec* ([,x* ,(map do-expr e*)] ...) ,(do-expr body)))]
                           [(record-type ,rtd ,[do-expr : e]) `(record-type ,rtd ,e)]
                           [(record-cd ,rcd ,rtd-expr ,[do-expr : e]) `(record-cd ,rcd ,rtd-expr ,e)]
@@ -1065,7 +1078,7 @@
                     [(clause (,x* ...) ,interface ,body)
                      (safe-assert (andmap (lambda (x) (not (prelex-operand x))) x*))
                      (with-output-language (Lsrc CaseLambdaClause)
-                       `(clause (,x* ...) ,interface ,((ids->do-expr (append x* ids)) body)))]))))
+                       `(clause (,x* ...) ,interface ,((ids->do-expr (append x* ids) interface) body)))]))))
             ((ids->do-clause '()) clause)))))
 
     (module (pure? ivory? ivory1? simple? simple1? simple/profile? simple/profile1? boolean-valued?
@@ -5452,7 +5465,7 @@
                         ;; than supported by the original, since only inlinable clauses
                         ;; are kept
                         (let ([new-cl* (fold-right (lambda (cl cl*)
-                                                     (let ([cl (externally-inlinable cl exts)])
+                                                     (let ([cl (externally-inlinable cl exts x)])
                                                        (if cl
                                                            (cons cl cl*)
                                                            cl*)))
