@@ -544,9 +544,10 @@
                    constructor-name)]
              [pred (procedure-rename
                     (lambda (v)
-                      (or (record? v rtd)
-                          (and (impersonator? v)
-                               (record? (impersonator-val v) rtd))))
+                      (and (#%$record? v)
+                           (or (record? v rtd)
+                               (and (impersonator? v)
+                                    (record? (impersonator-val v) rtd)))))
                     (string->symbol (string-append (symbol->string name) "?")))])
          (values rtd
                  (|#%struct-constructor| ctr (procedure-arity-mask ctr))
@@ -1083,8 +1084,11 @@
   (#%$record-ref s i))
 (define (unsafe-struct*-set! s i v)
   (#%$record-set! s i v))
-(define (unsafe-struct? v r)
-  (#3%record? v r))
+(define unsafe-struct?
+  (case-lambda
+    [(v) (#3%$record? v)]
+    [(v r)
+     (#3%record? v r)]))
 
 ;; internal use only, so doesn't need to have 'unsafe-struct as it's name, etc.:
 (define unsafe-struct #%$record)

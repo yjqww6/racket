@@ -2315,6 +2315,7 @@
   ($record-cas! [sig [(record sub-index ptr ptr) -> (boolean)]] [flags single-valued cptypes2])
   ($record-equal-procedure [flags single-valued discard])
   ($record-hash-procedure [flags single-valued discard])
+  ($record-is-a? [sig [(record rtd) -> (boolean)]] [flags pure mifoldable cp02 cptypes2])
   ($record-oops [sig [(maybe-who sub-ptr rtd) -> (bottom)]] [flags abort-op])
   ($record-ref [sig [(ptr sub-index) -> (ptr)]] [flags single-valued discard cp03])
   ($record-set! [sig [(ptr sub-index ptr) -> (void)]] [flags true cptypes2])

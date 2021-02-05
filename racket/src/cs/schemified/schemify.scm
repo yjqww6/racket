@@ -30062,25 +30062,31 @@
                                                                                                                                           schemified-type-id_0
                                                                                                                                           'v)))
                                                                                                                                     (let ((ques_0
-                                                                                                                                           (list
+                                                                                                                                           (list*
                                                                                                                                             'if
                                                                                                                                             (list
                                                                                                                                              'unsafe-struct?
-                                                                                                                                             tmp_0
-                                                                                                                                             tmp-type-id_0)
-                                                                                                                                            #t
-                                                                                                                                            (list*
+                                                                                                                                             tmp_0)
+                                                                                                                                            (list
                                                                                                                                              'if
                                                                                                                                              (list
-                                                                                                                                              'impersonator?
-                                                                                                                                              tmp_0)
-                                                                                                                                             (list
                                                                                                                                               'unsafe-struct?
-                                                                                                                                              (list
-                                                                                                                                               'impersonator-val
-                                                                                                                                               tmp_0)
+                                                                                                                                              tmp_0
                                                                                                                                               tmp-type-id_0)
-                                                                                                                                             '(#f)))))
+                                                                                                                                             #t
+                                                                                                                                             (list*
+                                                                                                                                              'if
+                                                                                                                                              (list
+                                                                                                                                               'impersonator?
+                                                                                                                                               tmp_0)
+                                                                                                                                              (list
+                                                                                                                                               'unsafe-struct?
+                                                                                                                                               (list
+                                                                                                                                                'impersonator-val
+                                                                                                                                                tmp_0)
+                                                                                                                                               tmp-type-id_0)
+                                                                                                                                              '(#f)))
+                                                                                                                                            '(#f))))
                                                                                                                                       (let ((app_0
                                                                                                                                              (car
                                                                                                                                               args_0)))

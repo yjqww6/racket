@@ -883,11 +883,13 @@
                  (define tmp (maybe-tmp (car args) 'v))
                  (define schemified-type-id (schemify type-id 'fresh))
                  (define tmp-type-id (maybe-tmp schemified-type-id 'v))
-                 (define ques `(if (unsafe-struct? ,tmp ,tmp-type-id)
-                                   #t
-                                   (if (impersonator? ,tmp)
-                                       (unsafe-struct? (impersonator-val ,tmp) ,tmp-type-id)
-                                       #f)))
+                 (define ques `(if (unsafe-struct? ,tmp)
+                                   (if (unsafe-struct? ,tmp ,tmp-type-id)
+                                       #t
+                                       (if (impersonator? ,tmp)
+                                           (unsafe-struct? (impersonator-val ,tmp) ,tmp-type-id)
+                                           #f))
+                                   #f))
                  (wrap-tmp tmp (car args)
                            (wrap-tmp tmp-type-id schemified-type-id 
                                      ques))]))

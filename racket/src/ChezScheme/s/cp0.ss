@@ -3936,11 +3936,8 @@
                            (begin
                              (residualize-seq '() (list ?x) ctxt)
                              false-rec))]))))
-        (define-inline 2 r6rs:record?
-          [(?x) (one-arg-case ?x ctxt)])
-        (define-inline 2 record?
-          [(?x) (one-arg-case ?x ctxt)]
-          [(?x ?rtd)
+        (define two-arg-case
+          (lambda (?x ?rtd ctxt level)
            (let ([rtdval (value-visit-operand! ?rtd)])
              (define abandon-ship
                (lambda (xval xres maybe-rtd)
@@ -4033,7 +4030,14 @@
                [else
                 (and (fx= level 3)
                      (let ([xval (value-visit-operand! ?x)])
-                       (abandon-ship xval (result-exp/indirect-ref xval) #f)))]))]))
+                       (abandon-ship xval (result-exp/indirect-ref xval) #f)))]))))
+        (define-inline 2 r6rs:record?
+          [(?x) (one-arg-case ?x ctxt)])
+        (define-inline 2 record?
+          [(?x) (one-arg-case ?x ctxt)]
+          [(?x ?rtd) (two-arg-case ?x ?rtd ctxt level)])
+        (define-inline 2 $record-is-a?
+          [(?x ?rtd) (two-arg-case ?x ?rtd ctxt level)]))
 
       (define-inline 2 csv7:record-type-field-names
         [(?rtd)

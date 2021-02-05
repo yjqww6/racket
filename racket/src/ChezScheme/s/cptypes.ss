@@ -929,10 +929,13 @@ Notes:
         (define-set-immediate set-car! (p val))
         (define-set-immediate set-cdr! (p val)))
 
-      (define-specialize 2 (record? $sealed-record?)
+      (define-specialize 2 (record? $sealed-record? $record-is-a?)
         [(val rtd) (let* ([val-type (get-type val)]
                           [to-unsafe (and (fx= level 2) 
-                                          (expr-is-rtd? rtd oldtypes))] ; use the old types
+                                          (expr-is-rtd? rtd oldtypes) ; use the old types
+                                          (if (eq? prim-name '$record-is-a?)
+                                              (predicate-implies? val-type '$record)
+                                              #t))]
                           [level (if to-unsafe 3 level)]
                           [pr (if to-unsafe
                                   (primref->unsafe-primref pr)
@@ -951,12 +954,16 @@ Notes:
                            (values (make-seq ctxt `(call ,preinfo ,pr ,val ,rtd) false-rec)
                                    false-rec ntypes #f #f)])]
                        [else
-                        (values `(call ,preinfo ,pr ,val ,rtd)
+                        (let ([pr (if (and (fx= level 3) (eq? prim-name 'record?)
+                                           (predicate-implies? val-type '$record))
+                                      (lookup-primref 3 '$record-is-a?)
+                                      pr)])
+                          (values `(call ,preinfo ,pr ,val ,rtd)
                                   ret
                                   ntypes
                                   (and (eq? ctxt 'test)
                                        (pred-env-add/ref ntypes val (rtd->record-predicate rtd #t) plxc))
-                                  #f)]))])
+                                  #f))]))])
 
       (define-specialize 2 exact?
         [(n) (let ([r (get-type n)])
