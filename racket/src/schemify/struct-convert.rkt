@@ -134,7 +134,9 @@
            ,@(if can-impersonate?
                  `((define ,s? ,(let ([p (name-procedure
                                           "" (struct-type-info-name sti) "" '|| "?"
-                                          `(lambda (v) (if (,raw-s? v) #t ($value (if (impersonator? v) (,raw-s? (impersonator-val v)) #f)))))])
+                                          `(lambda (v) (if (unsafe-struct? v)
+                                                           (if (,raw-s? v) #t ($value (if (impersonator? v) (,raw-s? (impersonator-val v)) #f)))
+                                                           #f)))])
                                   (if system-opaque?
                                       p
                                       `(#%struct-predicate ,p)))))

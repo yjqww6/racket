@@ -961,9 +961,10 @@
     (check-inspector-access who rtd*)
     (|#%struct-predicate|
      (lambda (v)
-       (or (record? v rtd*)
-           (and (impersonator? v)
-                (record? (impersonator-val v) rtd*)))))))
+       (and (#%$record? v)
+            (or (record? v rtd*)
+                (and (impersonator? v)
+                     (record? (impersonator-val v) rtd*))))))))
 
 ;; ----------------------------------------
 
@@ -1297,9 +1298,10 @@
                  (define name? (|#%struct-predicate|
                                 (|#%name|
                                  name?
-                                 (lambda (v) (or (authentic-name? v)
-                                                 (and (impersonator? v)
-                                                      (authentic-name? (impersonator-val v))))))))
+                                 (lambda (v) (and (#%$record? v)
+                                                  (or (authentic-name? v)
+                                                      (and (impersonator? v)
+                                                           (authentic-name? (impersonator-val v)))))))))
                  (define name-field
                    (let ([name-field (record-accessor struct:name field-index)])
                      (|#%struct-field-accessor|
