@@ -11133,29 +11133,34 @@
                         (%inline logtest
                           ,(%mref ,t ,(constant record-type-flags-disp))
                           (immediate ,(fix (constant rtd-opaque)))))))))))
+          (define build-check-if
+            (lambda (check-record? e-check e-body)
+              (if check-record?
+                  (build-and e-check e-body)
+                  e-body)))
           (define build-sealed-isa?
-            (lambda (e e-rtd)
+            (lambda (e e-rtd check-record?)
               (bind #t (e)
                 (bind #f (e-rtd)
-                  (build-and
+                  (build-check-if check-record?
                     (%type-check mask-typed-object type-typed-object ,e)
                     (%inline eq?
                       ,(%mref ,e ,(constant typed-object-type-disp))
                       ,e-rtd))))))
           (define build-unsealed-isa?
-            (lambda (e e-rtd)
+            (lambda (e e-rtd check-record?)
               (let ([t (make-tmp 't)] [a (make-tmp 'a)])
                 (let ([known-depth (nanopass-case (L7 Expr) e-rtd
                                      [(quote ,d) (and (record-type-descriptor? d)
                                                       (vector-length (rtd-ancestors d)))]
                                      [else #f])])
                   (bind #t (e e-rtd)
-                    (build-and
+                    (build-check-if check-record?
                       (%type-check mask-typed-object type-typed-object ,e)
                       `(let ([,t ,(%mref ,e ,(constant typed-object-type-disp))])
                          ,(build-simple-or
                            (%inline eq? ,t ,e-rtd)
-                           (build-and
+                           (build-check-if check-record?
                             (%type-check mask-record type-record ,t)
                             `(let ([,a ,(%mref ,t ,(constant record-type-ancestry-disp))])
                                ,(begin
@@ -11179,8 +11184,8 @@
                               (and (record-type-descriptor? x)
                                    (record-type-sealed? x)))
                    e-rtd)
-                 (build-sealed-isa? e e-rtd)
-                 (build-unsealed-isa? e e-rtd))])
+                 (build-sealed-isa? e e-rtd #t)
+                 (build-unsealed-isa? e e-rtd #t))])
           (define-inline 2 r6rs:record?
             [(e) (build-record? e)])
           (define-inline 2 record?
@@ -11190,11 +11195,20 @@
                [(quote ,d)
                 (and (record-type-descriptor? d)
                      (if (record-type-sealed? d)
-                         (build-sealed-isa? e e-rtd)
-                         (build-unsealed-isa? e e-rtd)))]
+                         (build-sealed-isa? e e-rtd #t)
+                         (build-unsealed-isa? e e-rtd #t)))]
                [else #f])])
+          (define-inline 3 $record-is-a?
+            [(e e-rtd)
+             (if (constant? (lambda (x)
+                              (and (record-type-descriptor? x)
+                                   (record-type-sealed? x)))
+                            e-rtd)
+                 (build-sealed-isa? e e-rtd #f)
+                 (build-unsealed-isa? e e-rtd #f))])
+          
           (define-inline 2 $sealed-record?
-            [(e e-rtd) (build-sealed-isa? e e-rtd)])
+            [(e e-rtd) (build-sealed-isa? e e-rtd #t)])
           (define-inline 3 $record-type-field-count
             [(e) (%inline srl ,(%inline - ,(%mref ,e ,(constant record-type-size-disp))
                                         (immediate ,(fxsll (fx- (constant record-data-disp) (constant record-type-disp))
@@ -11204,8 +11218,8 @@
             [(e) (let ([rtd (let () (include "hashtable-types.ss") (record-type-descriptor eq-ht))])
                    (let ([e-rtd `(quote ,rtd)])
                      (if (record-type-sealed? rtd)
-                         (build-sealed-isa? e e-rtd)
-                         (build-unsealed-isa? e e-rtd))))]))
+                         (build-sealed-isa? e e-rtd #t)
+                         (build-unsealed-isa? e e-rtd #t))))]))
         (define-inline 2 gensym?
           [(e)
            (bind #t (e)
