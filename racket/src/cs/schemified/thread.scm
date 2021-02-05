@@ -1272,10 +1272,12 @@
   (|#%name|
    node?
    (lambda (v)
-     (if (node?$1_2258 v)
-       #t
-       ($value
-        (if (impersonator? v) (node?$1_2258 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (node?$1_2258 v)
+         #t
+         ($value
+          (if (impersonator? v) (node?$1_2258 (impersonator-val v)) #f)))
+       #f))))
 (define node-key_2296 (|#%name| node-key (record-accessor struct:node$1 0)))
 (define node-key
   (|#%name|
@@ -1551,10 +1553,12 @@
   (|#%name|
    sandman?
    (lambda (v)
-     (if (sandman?_2599 v)
-       #t
-       ($value
-        (if (impersonator? v) (sandman?_2599 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (sandman?_2599 v)
+         #t
+         ($value
+          (if (impersonator? v) (sandman?_2599 (impersonator-val v)) #f)))
+       #f))))
 (define sandman-do-sleep_2487
   (|#%name| sandman-do-sleep (record-accessor struct:sandman 0)))
 (define sandman-do-sleep
@@ -2129,10 +2133,12 @@
   (|#%name|
    never-evt?
    (lambda (v)
-     (if (never-evt?_1958 v)
-       #t
-       ($value
-        (if (impersonator? v) (never-evt?_1958 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (never-evt?_1958 v)
+         #t
+         ($value
+          (if (impersonator? v) (never-evt?_1958 (impersonator-val v)) #f)))
+       #f))))
 (define the-never-evt (never-evt4.1))
 (define struct:always-evt
   (make-record-type-descriptor*
@@ -2170,10 +2176,12 @@
   (|#%name|
    always-evt?
    (lambda (v)
-     (if (always-evt?_2466 v)
-       #t
-       ($value
-        (if (impersonator? v) (always-evt?_2466 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (always-evt?_2466 v)
+         #t
+         ($value
+          (if (impersonator? v) (always-evt?_2466 (impersonator-val v)) #f)))
+       #f))))
 (define the-always-evt (always-evt5.1))
 (define struct:async-evt
   (make-record-type-descriptor*
@@ -2211,10 +2219,12 @@
   (|#%name|
    async-evt?
    (lambda (v)
-     (if (async-evt?_2619 v)
-       #t
-       ($value
-        (if (impersonator? v) (async-evt?_2619 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (async-evt?_2619 v)
+         #t
+         ($value
+          (if (impersonator? v) (async-evt?_2619 (impersonator-val v)) #f)))
+       #f))))
 (define the-async-evt (async-evt6.1))
 (define struct:wrap-evt
   (make-record-type-descriptor* 'evt #f (|#%nongenerative-uid| evt) #f #f 2 0))
@@ -2244,10 +2254,12 @@
   (|#%name|
    evt?
    (lambda (v)
-     (if (wrap-evt?_2747 v)
-       #t
-       ($value
-        (if (impersonator? v) (wrap-evt?_2747 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (wrap-evt?_2747 v)
+         #t
+         ($value
+          (if (impersonator? v) (wrap-evt?_2747 (impersonator-val v)) #f)))
+       #f))))
 (define wrap-evt-evt_2872
   (|#%name| evt-evt (record-accessor struct:wrap-evt 0)))
 (define wrap-evt-evt
@@ -2307,12 +2319,12 @@
   (|#%name|
    handle-evt?
    (lambda (v)
-     (if (handle-evt?$1_2894 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (handle-evt?$1_2894 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (handle-evt?$1_2894 v)
+         #t
+         ($value
+          (if (impersonator? v) (handle-evt?$1_2894 (impersonator-val v)) #f)))
+       #f))))
 (define struct:control-state-evt
   (make-record-type-descriptor*
    'control-state-evt
@@ -2349,12 +2361,14 @@
   (|#%name|
    control-state-evt?
    (lambda (v)
-     (if (control-state-evt?_2384 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (control-state-evt?_2384 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (control-state-evt?_2384 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (control-state-evt?_2384 (impersonator-val v))
+            #f)))
+       #f))))
 (define control-state-evt-evt_2775
   (|#%name|
    control-state-evt-evt
@@ -2474,12 +2488,14 @@
   (|#%name|
    evt?
    (lambda (v)
-     (if (poll-guard-evt?_2462 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (poll-guard-evt?_2462 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (poll-guard-evt?_2462 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (poll-guard-evt?_2462 (impersonator-val v))
+            #f)))
+       #f))))
 (define poll-guard-evt-proc_2498
   (|#%name| evt-proc (record-accessor struct:poll-guard-evt 0)))
 (define poll-guard-evt-proc
@@ -2524,10 +2540,12 @@
   (|#%name|
    evt?
    (lambda (v)
-     (if (choice-evt?_3069 v)
-       #t
-       ($value
-        (if (impersonator? v) (choice-evt?_3069 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (choice-evt?_3069 v)
+         #t
+         ($value
+          (if (impersonator? v) (choice-evt?_3069 (impersonator-val v)) #f)))
+       #f))))
 (define choice-evt-evts_2883
   (|#%name| evt-evts (record-accessor struct:choice-evt 0)))
 (define choice-evt-evts
@@ -2639,10 +2657,12 @@
   (|#%name|
    poller-evt?
    (lambda (v)
-     (if (poller-evt?_2710 v)
-       #t
-       ($value
-        (if (impersonator? v) (poller-evt?_2710 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (poller-evt?_2710 v)
+         #t
+         ($value
+          (if (impersonator? v) (poller-evt?_2710 (impersonator-val v)) #f)))
+       #f))))
 (define poller-evt-poller_2477
   (|#%name| poller-evt-poller (record-accessor struct:poller-evt 0)))
 (define poller-evt-poller
@@ -2747,12 +2767,14 @@
   (|#%name|
    select-waiter?
    (lambda (v)
-     (if (select-waiter?_2648 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (select-waiter?_2648 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (select-waiter?_2648 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (select-waiter?_2648 (impersonator-val v))
+            #f)))
+       #f))))
 (define select-waiter-proc_2543
   (|#%name| select-waiter-proc (record-accessor struct:select-waiter 0)))
 (define select-waiter-proc
@@ -4239,12 +4261,14 @@
   (|#%name|
    semaphore-peek-evt?
    (lambda (v)
-     (if (1/semaphore-peek-evt?_2396 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/semaphore-peek-evt?_2396 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/semaphore-peek-evt?_2396 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (1/semaphore-peek-evt?_2396 (impersonator-val v))
+            #f)))
+       #f))))
 (define semaphore-peek-evt-sema_2184
   (|#%name|
    semaphore-peek-evt-sema
@@ -4301,12 +4325,14 @@
   (|#%name|
    semaphore-peek-select-waiter?
    (lambda (v)
-     (if (semaphore-peek-select-waiter?_2529 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (semaphore-peek-select-waiter?_2529 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (semaphore-peek-select-waiter?_2529 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (semaphore-peek-select-waiter?_2529 (impersonator-val v))
+            #f)))
+       #f))))
 (define 1/make-semaphore
   (let ((make-semaphore_0
          (|#%name|
@@ -4746,12 +4772,14 @@
   (|#%name|
    schedule-info?
    (lambda (v)
-     (if (schedule-info?_2650 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (schedule-info?_2650 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (schedule-info?_2650 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (schedule-info?_2650 (impersonator-val v))
+            #f)))
+       #f))))
 (define schedule-info-did-work?_2393
   (|#%name| schedule-info-did-work? (record-accessor struct:schedule-info 0)))
 (define schedule-info-did-work?
@@ -4927,12 +4955,14 @@
   (|#%name|
    plumber-flush-handle?
    (lambda (v)
-     (if (1/plumber-flush-handle?_2816 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/plumber-flush-handle?_2816 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/plumber-flush-handle?_2816 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (1/plumber-flush-handle?_2816 (impersonator-val v))
+            #f)))
+       #f))))
 (define plumber-flush-handle-plumber_2929
   (|#%name|
    plumber-flush-handle-plumber
@@ -7116,10 +7146,12 @@
   (|#%name|
    thread-dead-evt?
    (lambda (v)
-     (if (dead-evt?_2047 v)
-       #t
-       ($value
-        (if (impersonator? v) (dead-evt?_2047 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (dead-evt?_2047 v)
+         #t
+         ($value
+          (if (impersonator? v) (dead-evt?_2047 (impersonator-val v)) #f)))
+       #f))))
 (define dead-evt-sema_2516
   (|#%name| thread-dead-evt-sema (record-accessor struct:dead-evt 0)))
 (define dead-evt-sema
@@ -7586,12 +7618,14 @@
   (|#%name|
    suspend-resume-evt?
    (lambda (v)
-     (if (suspend-resume-evt?_2231 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (suspend-resume-evt?_2231 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (suspend-resume-evt?_2231 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (suspend-resume-evt?_2231 (impersonator-val v))
+            #f)))
+       #f))))
 (define suspend-resume-evt-sema_2220
   (|#%name|
    suspend-resume-evt-sema
@@ -7681,10 +7715,12 @@
   (|#%name|
    thread-suspend-evt?
    (lambda (v)
-     (if (suspend-evt?_3224 v)
-       #t
-       ($value
-        (if (impersonator? v) (suspend-evt?_3224 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (suspend-evt?_3224 v)
+         #t
+         ($value
+          (if (impersonator? v) (suspend-evt?_3224 (impersonator-val v)) #f)))
+       #f))))
 (define struct:resume-evt
   (make-record-type-descriptor*
    'thread-resume-evt
@@ -7718,10 +7754,12 @@
   (|#%name|
    thread-resume-evt?
    (lambda (v)
-     (if (resume-evt?_2037 v)
-       #t
-       ($value
-        (if (impersonator? v) (resume-evt?_2037 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (resume-evt?_2037 v)
+         #t
+         ($value
+          (if (impersonator? v) (resume-evt?_2037 (impersonator-val v)) #f)))
+       #f))))
 (define 1/thread-resume-evt
   (|#%name|
    thread-resume-evt
@@ -8197,12 +8235,14 @@
   (|#%name|
    thread-receive-evt?
    (lambda (v)
-     (if (thread-receiver-evt?_2591 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (thread-receiver-evt?_2591 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (thread-receiver-evt?_2591 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (thread-receiver-evt?_2591 (impersonator-val v))
+            #f)))
+       #f))))
 (define 1/thread-receive-evt
   (|#%name| thread-receive-evt (lambda () (begin (thread-receiver-evt26.1)))))
 (define effect_2328
@@ -8268,10 +8308,12 @@
   (|#%name|
    channel?
    (lambda (v)
-     (if (1/channel?_2784 v)
-       #t
-       ($value
-        (if (impersonator? v) (1/channel?_2784 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (1/channel?_2784 v)
+         #t
+         ($value
+          (if (impersonator? v) (1/channel?_2784 (impersonator-val v)) #f)))
+       #f))))
 (define channel-get-queue_2731
   (|#%name| channel-get-queue (record-accessor struct:channel 0)))
 (define channel-get-queue
@@ -8347,12 +8389,14 @@
   (|#%name|
    channel-put-evt?
    (lambda (v)
-     (if (channel-put-evt*?_2795 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (channel-put-evt*?_2795 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (channel-put-evt*?_2795 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (channel-put-evt*?_2795 (impersonator-val v))
+            #f)))
+       #f))))
 (define channel-put-evt*-ch_2175
   (|#%name| channel-put-evt-ch (record-accessor struct:channel-put-evt* 0)))
 (define channel-put-evt*-ch
@@ -8420,12 +8464,14 @@
   (|#%name|
    channel-select-waiter?
    (lambda (v)
-     (if (channel-select-waiter?_2334 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (channel-select-waiter?_2334 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (channel-select-waiter?_2334 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (channel-select-waiter?_2334 (impersonator-val v))
+            #f)))
+       #f))))
 (define channel-select-waiter-thread_2342
   (|#%name|
    channel-select-waiter-thread
@@ -8931,10 +8977,12 @@
   (|#%name|
    syncing?
    (lambda (v)
-     (if (syncing?_2448 v)
-       #t
-       ($value
-        (if (impersonator? v) (syncing?_2448 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (syncing?_2448 v)
+         #t
+         ($value
+          (if (impersonator? v) (syncing?_2448 (impersonator-val v)) #f)))
+       #f))))
 (define syncing-selected_2375
   (|#%name| syncing-selected (record-accessor struct:syncing 0)))
 (define syncing-selected
@@ -9137,10 +9185,12 @@
   (|#%name|
    syncer?
    (lambda (v)
-     (if (syncer?_2220 v)
-       #t
-       ($value
-        (if (impersonator? v) (syncer?_2220 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (syncer?_2220 v)
+         #t
+         ($value
+          (if (impersonator? v) (syncer?_2220 (impersonator-val v)) #f)))
+       #f))))
 (define syncer-evt_2678
   (|#%name| syncer-evt (record-accessor struct:syncer 0)))
 (define syncer-evt
@@ -10665,12 +10715,14 @@
   (|#%name|
    evt?
    (lambda (v)
-     (if (replacing-evt?_2294 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (replacing-evt?_2294 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (replacing-evt?_2294 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (replacing-evt?_2294 (impersonator-val v))
+            #f)))
+       #f))))
 (define replacing-evt-guard_2603
   (|#%name| evt-guard (record-accessor struct:replacing-evt 0)))
 (define replacing-evt-guard
@@ -10716,12 +10768,14 @@
   (|#%name|
    evt?
    (lambda (v)
-     (if (nested-sync-evt?_2757 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (nested-sync-evt?_2757 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (nested-sync-evt?_2757 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (nested-sync-evt?_2757 (impersonator-val v))
+            #f)))
+       #f))))
 (define nested-sync-evt-s_2315
   (|#%name| evt-s (record-accessor struct:nested-sync-evt 0)))
 (define nested-sync-evt-s
@@ -10937,12 +10991,14 @@
   (|#%name|
    system-idle-evt?
    (lambda (v)
-     (if (system-idle-evt?_2250 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (system-idle-evt?_2250 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (system-idle-evt?_2250 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (system-idle-evt?_2250 (impersonator-val v))
+            #f)))
+       #f))))
 (define the-idle-evt (system-idle-evt1.1))
 (define get-system-idle-evt
   (|#%name| system-idle-evt (lambda () (begin the-idle-evt))))
@@ -11101,12 +11157,12 @@
   (|#%name|
    future-event?
    (lambda (v)
-     (if (future-event?_2528 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (future-event?_2528 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (future-event?_2528 v)
+         #t
+         ($value
+          (if (impersonator? v) (future-event?_2528 (impersonator-val v)) #f)))
+       #f))))
 (define future-event-future-id_2042
   (|#%name| future-event-future-id (record-accessor struct:future-event 0)))
 (define future-event-future-id
@@ -11407,10 +11463,12 @@
   (|#%name|
    future-evt?
    (lambda (v)
-     (if (future-evt?_2974 v)
-       #t
-       ($value
-        (if (impersonator? v) (future-evt?_2974 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (future-evt?_2974 v)
+         #t
+         ($value
+          (if (impersonator? v) (future-evt?_2974 (impersonator-val v)) #f)))
+       #f))))
 (define future-evt-future_3037
   (|#%name| future-evt-future (record-accessor struct:future-evt 0)))
 (define future-evt-future
@@ -12742,10 +12800,12 @@
   (|#%name|
    alarm-evt?
    (lambda (v)
-     (if (alarm-evt?_2440 v)
-       #t
-       ($value
-        (if (impersonator? v) (alarm-evt?_2440 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (alarm-evt?_2440 v)
+         #t
+         ($value
+          (if (impersonator? v) (alarm-evt?_2440 (impersonator-val v)) #f)))
+       #f))))
 (define alarm-evt-msecs_2883
   (|#%name| alarm-evt-msecs (record-accessor struct:alarm-evt 0)))
 (define alarm-evt-msecs
@@ -13635,10 +13695,12 @@
   (|#%name|
    place-event?
    (lambda (v)
-     (if (place-event?_2380 v)
-       #t
-       ($value
-        (if (impersonator? v) (place-event?_2380 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (place-event?_2380 v)
+         #t
+         ($value
+          (if (impersonator? v) (place-event?_2380 (impersonator-val v)) #f)))
+       #f))))
 (define place-event-id_2098
   (|#%name| place-event-id (record-accessor struct:place-event 0)))
 (define place-event-id
@@ -14342,12 +14404,14 @@
   (|#%name|
    place-dead-evt?
    (lambda (v)
-     (if (place-done-evt?_2138 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (place-done-evt?_2138 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (place-done-evt?_2138 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (place-done-evt?_2138 (impersonator-val v))
+            #f)))
+       #f))))
 (define place-done-evt-p_2323
   (|#%name| place-dead-evt-p (record-accessor struct:place-done-evt 0)))
 (define place-done-evt-p
@@ -14599,10 +14663,12 @@
   (|#%name|
    place-channel?
    (lambda (v)
-     (if (pchannel?_3032 v)
-       #t
-       ($value
-        (if (impersonator? v) (pchannel?_3032 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (pchannel?_3032 v)
+         #t
+         ($value
+          (if (impersonator? v) (pchannel?_3032 (impersonator-val v)) #f)))
+       #f))))
 (define pchannel-in-mq-e_2571
   (|#%name| place-channel-in-mq-e (record-accessor struct:pchannel 0)))
 (define pchannel-in-mq-e
@@ -14918,12 +14984,14 @@
   (|#%name|
    fsemaphore-box-evt?
    (lambda (v)
-     (if (fsemaphore-box-evt?_2344 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (fsemaphore-box-evt?_2344 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (fsemaphore-box-evt?_2344 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (fsemaphore-box-evt?_2344 (impersonator-val v))
+            #f)))
+       #f))))
 (define fsemaphore-box-evt-b_2517
   (|#%name|
    fsemaphore-box-evt-b

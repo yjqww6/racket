@@ -2654,10 +2654,12 @@
   (|#%name|
    sandman?
    (lambda (v)
-     (if (sandman?_2599 v)
-       #t
-       ($value
-        (if (impersonator? v) (sandman?_2599 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (sandman?_2599 v)
+         #t
+         ($value
+          (if (impersonator? v) (sandman?_2599 (impersonator-val v)) #f)))
+       #f))))
 (define sandman-do-sleep_2487
   (|#%name| sandman-do-sleep (record-accessor struct:sandman 0)))
 (define sandman-do-sleep
@@ -3621,9 +3623,11 @@
   (|#%name|
    exts?
    (lambda (v)
-     (if (exts?_3457 v)
-       #t
-       ($value (if (impersonator? v) (exts?_3457 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (exts?_3457 v)
+         #t
+         ($value (if (impersonator? v) (exts?_3457 (impersonator-val v)) #f)))
+       #f))))
 (define exts-timeout-at_2133
   (|#%name| exts-timeout-at (record-accessor struct:exts 0)))
 (define exts-timeout-at
@@ -3971,12 +3975,14 @@
   (|#%name|
    core-port-methods?
    (lambda (v)
-     (if (core-port-methods?.1_2103 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (core-port-methods?.1_2103 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (core-port-methods?.1_2103 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (core-port-methods?.1_2103 (impersonator-val v))
+            #f)))
+       #f))))
 (define core-port-methods-close.1_1881
   (|#%name|
    core-port-methods-close
@@ -4331,12 +4337,14 @@
   (|#%name|
    core-input-port-methods?
    (lambda (v)
-     (if (core-input-port-methods?.1_1957 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (core-input-port-methods?.1_1957 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (core-input-port-methods?.1_1957 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (core-input-port-methods?.1_1957 (impersonator-val v))
+            #f)))
+       #f))))
 (define core-input-port-methods-prepare-change.1_1814
   (|#%name|
    core-input-port-methods-prepare-change
@@ -4651,12 +4659,14 @@
   (|#%name|
    core-output-port-methods?
    (lambda (v)
-     (if (core-output-port-methods?.1_2148 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (core-output-port-methods?.1_2148 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (core-output-port-methods?.1_2148 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (core-output-port-methods?.1_2148 (impersonator-val v))
+            #f)))
+       #f))))
 (define core-output-port-methods-write-out.1_2388
   (|#%name|
    core-output-port-methods-write-out
@@ -4823,10 +4833,12 @@
   (|#%name|
    write-evt?
    (lambda (v)
-     (if (write-evt?_2870 v)
-       #t
-       ($value
-        (if (impersonator? v) (write-evt?_2870 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (write-evt?_2870 v)
+         #t
+         ($value
+          (if (impersonator? v) (write-evt?_2870 (impersonator-val v)) #f)))
+       #f))))
 (define write-evt-proc_2583
   (|#%name| write-evt-proc (record-accessor struct:write-evt 0)))
 (define write-evt-proc
@@ -4889,10 +4901,12 @@
   (|#%name|
    utf-8-state?
    (lambda (v)
-     (if (utf-8-state?_2522 v)
-       #t
-       ($value
-        (if (impersonator? v) (utf-8-state?_2522 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (utf-8-state?_2522 v)
+         #t
+         ($value
+          (if (impersonator? v) (utf-8-state?_2522 (impersonator-val v)) #f)))
+       #f))))
 (define utf-8-state-accum_2308
   (|#%name| utf-8-state-accum (record-accessor struct:utf-8-state 0)))
 (define utf-8-state-accum
@@ -6716,12 +6730,14 @@
   (|#%name|
    commit-manager?
    (lambda (v)
-     (if (commit-manager?_2038 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (commit-manager?_2038 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (commit-manager?_2038 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (commit-manager?_2038 (impersonator-val v))
+            #f)))
+       #f))))
 (define commit-manager-pause-channel_2672
   (|#%name|
    commit-manager-pause-channel
@@ -6807,12 +6823,14 @@
   (|#%name|
    commit-request?
    (lambda (v)
-     (if (commit-request?_2595 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (commit-request?_2595 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (commit-request?_2595 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (commit-request?_2595 (impersonator-val v))
+            #f)))
+       #f))))
 (define commit-request-ext-evt_2428
   (|#%name| commit-request-ext-evt (record-accessor struct:commit-request 0)))
 (define commit-request-ext-evt
@@ -6932,12 +6950,14 @@
   (|#%name|
    commit-response?
    (lambda (v)
-     (if (commit-response?_2041 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (commit-response?_2041 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (commit-response?_2041 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (commit-response?_2041 (impersonator-val v))
+            #f)))
+       #f))))
 (define commit-response-abandon-evt_3225
   (|#%name|
    commit-response-abandon-evt
@@ -7300,12 +7320,14 @@
   (|#%name|
    commit-input-port-methods?
    (lambda (v)
-     (if (commit-input-port-methods?.1_1864 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (commit-input-port-methods?.1_1864 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (commit-input-port-methods?.1_1864 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (commit-input-port-methods?.1_1864 (impersonator-val v))
+            #f)))
+       #f))))
 (define commit-input-port-vtable.1
   (let ((app_0 (core-port-methods-close.1 core-input-port-vtable.1)))
     (let ((app_1 (core-port-methods-count-lines!.1 core-input-port-vtable.1)))
@@ -7572,12 +7594,14 @@
   (|#%name|
    pipe-data-methods?
    (lambda (v)
-     (if (pipe-data-methods?.1_2563 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (pipe-data-methods?.1_2563 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (pipe-data-methods?.1_2563 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (pipe-data-methods?.1_2563 (impersonator-val v))
+            #f)))
+       #f))))
 (define pipe-data-vtable.1 (pipe-data-methods10.1))
 (define temp1.1$2
   (|#%name|
@@ -7744,12 +7768,14 @@
   (|#%name|
    pipe-input-port-methods?
    (lambda (v)
-     (if (pipe-input-port-methods?.1_2609 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (pipe-input-port-methods?.1_2609 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (pipe-input-port-methods?.1_2609 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (pipe-input-port-methods?.1_2609 (impersonator-val v))
+            #f)))
+       #f))))
 (define pipe-input-port-vtable.1
   (let ((app_0 (core-port-methods-get-location.1 commit-input-port-vtable.1)))
     (let ((app_1
@@ -8142,12 +8168,14 @@
   (|#%name|
    pipe-output-port-methods?
    (lambda (v)
-     (if (pipe-output-port-methods?.1_2695 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (pipe-output-port-methods?.1_2695 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (pipe-output-port-methods?.1_2695 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (pipe-output-port-methods?.1_2695 (impersonator-val v))
+            #f)))
+       #f))))
 (define pipe-output-port-vtable.1
   (let ((app_0 (core-port-methods-count-lines!.1 core-output-port-vtable.1)))
     (let ((app_1 (core-port-methods-get-location.1 core-output-port-vtable.1)))
@@ -8744,12 +8772,14 @@
   (|#%name|
    pipe-write-poller?
    (lambda (v)
-     (if (pipe-write-poller?_2587 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (pipe-write-poller?_2587 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (pipe-write-poller?_2587 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (pipe-write-poller?_2587 (impersonator-val v))
+            #f)))
+       #f))))
 (define pipe-write-poller-d_2070
   (|#%name| pipe-write-poller-d (record-accessor struct:pipe-write-poller 0)))
 (define pipe-write-poller-d
@@ -8829,12 +8859,14 @@
   (|#%name|
    pipe-read-poller?
    (lambda (v)
-     (if (pipe-read-poller?_2227 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (pipe-read-poller?_2227 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (pipe-read-poller?_2227 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (pipe-read-poller?_2227 (impersonator-val v))
+            #f)))
+       #f))))
 (define pipe-read-poller-d_2582
   (|#%name| pipe-read-poller-d (record-accessor struct:pipe-read-poller 0)))
 (define pipe-read-poller-d
@@ -8963,12 +8995,14 @@
   (|#%name|
    peek-via-read-input-port-methods?
    (lambda (v)
-     (if (peek-via-read-input-port-methods?.1_2485 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (peek-via-read-input-port-methods?.1_2485 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (peek-via-read-input-port-methods?.1_2485 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (peek-via-read-input-port-methods?.1_2485 (impersonator-val v))
+            #f)))
+       #f))))
 (define peek-via-read-input-port-methods-read-in/inner.1_2761
   (|#%name|
    peek-via-read-input-port-methods-read-in/inner
@@ -9723,12 +9757,14 @@
   (|#%name|
    fd-input-port-methods?
    (lambda (v)
-     (if (fd-input-port-methods?.1_2579 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (fd-input-port-methods?.1_2579 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (fd-input-port-methods?.1_2579 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (fd-input-port-methods?.1_2579 (impersonator-val v))
+            #f)))
+       #f))))
 (define fd-input-port-methods-on-close.1_2944
   (|#%name|
    fd-input-port-methods-on-close
@@ -10089,12 +10125,14 @@
   (|#%name|
    fd-output-port-methods?
    (lambda (v)
-     (if (fd-output-port-methods?.1_2665 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (fd-output-port-methods?.1_2665 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (fd-output-port-methods?.1_2665 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (fd-output-port-methods?.1_2665 (impersonator-val v))
+            #f)))
+       #f))))
 (define fd-output-port-methods-on-close.1_3216
   (|#%name|
    fd-output-port-methods-on-close
@@ -10734,10 +10772,12 @@
   (|#%name|
    fd-evt?
    (lambda (v)
-     (if (fd-evt?_2860 v)
-       #t
-       ($value
-        (if (impersonator? v) (fd-evt?_2860 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (fd-evt?_2860 v)
+         #t
+         ($value
+          (if (impersonator? v) (fd-evt?_2860 (impersonator-val v)) #f)))
+       #f))))
 (define fd-evt-fd_2964 (|#%name| fd-evt-fd (record-accessor struct:fd-evt 0)))
 (define fd-evt-fd
   (|#%name|
@@ -10850,12 +10890,14 @@
   (|#%name|
    rktio-fd-flushed-evt?
    (lambda (v)
-     (if (rktio-fd-flushed-evt?_2575 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (rktio-fd-flushed-evt?_2575 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (rktio-fd-flushed-evt?_2575 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (rktio-fd-flushed-evt?_2575 (impersonator-val v))
+            #f)))
+       #f))))
 (define rktio-fd-flushed-evt-p_2868
   (|#%name|
    rktio-fd-flushed-evt-p
@@ -11619,12 +11661,14 @@
   (|#%name|
    progress-evt?
    (lambda (v)
-     (if (1/progress-evt?_3005 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/progress-evt?_3005 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/progress-evt?_3005 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (1/progress-evt?_3005 (impersonator-val v))
+            #f)))
+       #f))))
 (define progress-evt-port_3267
   (|#%name| progress-evt-port (record-accessor struct:progress-evt 0)))
 (define progress-evt-port
@@ -14939,12 +14983,14 @@
   (|#%name|
    utf-8-converter?
    (lambda (v)
-     (if (utf-8-converter?_2501 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (utf-8-converter?_2501 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (utf-8-converter?_2501 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (utf-8-converter?_2501 (impersonator-val v))
+            #f)))
+       #f))))
 (define utf-8-converter-from_2292
   (|#%name| utf-8-converter-from (record-accessor struct:utf-8-converter 0)))
 (define utf-8-converter-from
@@ -15873,12 +15919,14 @@
   (|#%name|
    bytes-converter?
    (lambda (v)
-     (if (1/bytes-converter?_1964 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/bytes-converter?_1964 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/bytes-converter?_1964 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (1/bytes-converter?_1964 (impersonator-val v))
+            #f)))
+       #f))))
 (define bytes-converter-c_3301
   (|#%name| bytes-converter-c (record-accessor struct:bytes-converter 0)))
 (define bytes-converter-c
@@ -17148,10 +17196,12 @@
   (|#%name|
    path?
    (lambda (v)
-     (if (1/path?_2312 v)
-       #t
-       ($value
-        (if (impersonator? v) (1/path?_2312 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (1/path?_2312 v)
+         #t
+         ($value
+          (if (impersonator? v) (1/path?_2312 (impersonator-val v)) #f)))
+       #f))))
 (define path-bytes_2645 (|#%name| path-bytes (record-accessor struct:path 0)))
 (define path-bytes
   (|#%name|
@@ -18480,12 +18530,14 @@
   (|#%name|
    bytes-input-port-methods?
    (lambda (v)
-     (if (bytes-input-port-methods?.1_2316 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (bytes-input-port-methods?.1_2316 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (bytes-input-port-methods?.1_2316 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (bytes-input-port-methods?.1_2316 (impersonator-val v))
+            #f)))
+       #f))))
 (define bytes-input-port-vtable.1
   (let ((app_0 (core-port-methods-count-lines!.1 commit-input-port-vtable.1)))
     (let ((app_1
@@ -18764,12 +18816,14 @@
   (|#%name|
    bytes-output-port-methods?
    (lambda (v)
-     (if (bytes-output-port-methods?.1_1617 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (bytes-output-port-methods?.1_1617 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (bytes-output-port-methods?.1_1617 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (bytes-output-port-methods?.1_1617 (impersonator-val v))
+            #f)))
+       #f))))
 (define bytes-output-port-methods-get-length.1_2990
   (|#%name|
    bytes-output-port-methods-get-length
@@ -19258,12 +19312,14 @@
   (|#%name|
    max-output-port-methods?
    (lambda (v)
-     (if (max-output-port-methods?.1_2811 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (max-output-port-methods?.1_2811 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (max-output-port-methods?.1_2811 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (max-output-port-methods?.1_2811 (impersonator-val v))
+            #f)))
+       #f))))
 (define max-output-port-vtable.1
   (let ((app_0 (core-port-methods-close.1 core-output-port-vtable.1)))
     (let ((app_1 (core-port-methods-count-lines!.1 core-output-port-vtable.1)))
@@ -20211,12 +20267,14 @@
   (|#%name|
    nowhere-output-port-methods?
    (lambda (v)
-     (if (nowhere-output-port-methods?.1_2940 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (nowhere-output-port-methods?.1_2940 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (nowhere-output-port-methods?.1_2940 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (nowhere-output-port-methods?.1_2940 (impersonator-val v))
+            #f)))
+       #f))))
 (define nowhere-output-port-vtable.1
   (let ((app_0 (core-port-methods-close.1 core-output-port-vtable.1)))
     (let ((app_1 (core-port-methods-count-lines!.1 core-output-port-vtable.1)))
@@ -20453,12 +20511,14 @@
   (|#%name|
    as-constructor?
    (lambda (v)
-     (if (as-constructor?_2888 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (as-constructor?_2888 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (as-constructor?_2888 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (as-constructor?_2888 (impersonator-val v))
+            #f)))
+       #f))))
 (define as-constructor-tag_2351
   (|#%name| as-constructor-tag (record-accessor struct:as-constructor 0)))
 (define as-constructor-tag
@@ -23451,12 +23511,14 @@
   (|#%name|
    starting-point?
    (lambda (v)
-     (if (starting-point?_2697 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (starting-point?_2697 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (starting-point?_2697 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (starting-point?_2697 (impersonator-val v))
+            #f)))
+       #f))))
 (define starting-point-kind_3029
   (|#%name| starting-point-kind (record-accessor struct:starting-point 0)))
 (define starting-point-kind
@@ -25433,12 +25495,14 @@
   (|#%name|
    security-guard?
    (lambda (v)
-     (if (1/security-guard?_2766 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/security-guard?_2766 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/security-guard?_2766 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (1/security-guard?_2766 (impersonator-val v))
+            #f)))
+       #f))))
 (define security-guard-parent_2613
   (|#%name| security-guard-parent (record-accessor struct:security-guard 0)))
 (define security-guard-parent
@@ -31621,10 +31685,12 @@
   (|#%name|
    logger?
    (lambda (v)
-     (if (1/logger?_2836 v)
-       #t
-       ($value
-        (if (impersonator? v) (1/logger?_2836 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (1/logger?_2836 v)
+         #t
+         ($value
+          (if (impersonator? v) (1/logger?_2836 (impersonator-val v)) #f)))
+       #f))))
 (define logger-topic_2043
   (|#%name| logger-topic (record-accessor struct:logger 0)))
 (define logger-topic
@@ -32191,12 +32257,14 @@
   (|#%name|
    log-receiver?
    (lambda (v)
-     (if (1/log-receiver?_1856 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/log-receiver?_1856 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/log-receiver?_1856 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (1/log-receiver?_1856 (impersonator-val v))
+            #f)))
+       #f))))
 (define log-receiver-filters_2874
   (|#%name| log-receiver-filters (record-accessor struct:log-receiver 0)))
 (define log-receiver-filters
@@ -32303,12 +32371,14 @@
   (|#%name|
    log-receiver?
    (lambda (v)
-     (if (queue-log-receiver?_2521 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (queue-log-receiver?_2521 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (queue-log-receiver?_2521 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (queue-log-receiver?_2521 (impersonator-val v))
+            #f)))
+       #f))))
 (define queue-log-receiver-msgs_2408
   (|#%name| log-receiver-msgs (record-accessor struct:queue-log-receiver 0)))
 (define queue-log-receiver-msgs
@@ -32465,12 +32535,14 @@
   (|#%name|
    stdio-log-receiver?
    (lambda (v)
-     (if (stdio-log-receiver?_2188 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (stdio-log-receiver?_2188 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (stdio-log-receiver?_2188 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (stdio-log-receiver?_2188 (impersonator-val v))
+            #f)))
+       #f))))
 (define stdio-log-receiver-rktio_1849
   (|#%name|
    stdio-log-receiver-rktio
@@ -32602,12 +32674,14 @@
   (|#%name|
    syslog-log-receiver?
    (lambda (v)
-     (if (syslog-log-receiver?_2295 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (syslog-log-receiver?_2295 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (syslog-log-receiver?_2295 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (syslog-log-receiver?_2295 (impersonator-val v))
+            #f)))
+       #f))))
 (define syslog-log-receiver-rktio_2512
   (|#%name|
    syslog-log-receiver-rktio
@@ -33567,12 +33641,14 @@
   (|#%name|
    filesystem-change-evt?
    (lambda (v)
-     (if (fs-change-evt?_2560 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (fs-change-evt?_2560 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (fs-change-evt?_2560 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (fs-change-evt?_2560 (impersonator-val v))
+            #f)))
+       #f))))
 (define fs-change-evt-rfc_2934
   (|#%name|
    filesystem-change-evt-rfc
@@ -34066,12 +34142,12 @@
   (|#%name|
    subprocess?
    (lambda (v)
-     (if (1/subprocess?_2383 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/subprocess?_2383 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/subprocess?_2383 v)
+         #t
+         ($value
+          (if (impersonator? v) (1/subprocess?_2383 (impersonator-val v)) #f)))
+       #f))))
 (define subprocess-process_2270
   (|#%name| subprocess-process (record-accessor struct:subprocess 0)))
 (define subprocess-process
@@ -34967,12 +35043,14 @@
   (|#%name|
    tcp-input-port-methods?
    (lambda (v)
-     (if (tcp-input-port-methods?.1_2414 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (tcp-input-port-methods?.1_2414 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (tcp-input-port-methods?.1_2414 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (tcp-input-port-methods?.1_2414 (impersonator-val v))
+            #f)))
+       #f))))
 (define tcp-input-port-vtable.1
   (let ((app_0 (core-port-methods-close.1 fd-input-port-vtable.1)))
     (let ((app_1 (core-port-methods-count-lines!.1 fd-input-port-vtable.1)))
@@ -35146,12 +35224,14 @@
   (|#%name|
    tcp-output-port-methods?
    (lambda (v)
-     (if (tcp-output-port-methods?.1_2754 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (tcp-output-port-methods?.1_2754 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (tcp-output-port-methods?.1_2754 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (tcp-output-port-methods?.1_2754 (impersonator-val v))
+            #f)))
+       #f))))
 (define tcp-output-port-vtable.1
   (let ((app_0 (core-port-methods-close.1 fd-output-port-vtable.1)))
     (let ((app_1 (core-port-methods-count-lines!.1 fd-output-port-vtable.1)))
@@ -35865,12 +35945,14 @@
   (|#%name|
    tcp-listener?
    (lambda (v)
-     (if (1/tcp-listener?_2760 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (1/tcp-listener?_2760 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (1/tcp-listener?_2760 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (1/tcp-listener?_2760 (impersonator-val v))
+            #f)))
+       #f))))
 (define tcp-listener-lnr_2358
   (|#%name| tcp-listener-lnr (record-accessor struct:tcp-listener 0)))
 (define tcp-listener-lnr
@@ -36309,10 +36391,12 @@
   (|#%name|
    tcp-accept-evt?
    (lambda (v)
-     (if (accept-evt?_2605 v)
-       #t
-       ($value
-        (if (impersonator? v) (accept-evt?_2605 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (accept-evt?_2605 v)
+         #t
+         ($value
+          (if (impersonator? v) (accept-evt?_2605 (impersonator-val v)) #f)))
+       #f))))
 (define accept-evt-listener_2406
   (|#%name| tcp-accept-evt-listener (record-accessor struct:accept-evt 0)))
 (define accept-evt-listener

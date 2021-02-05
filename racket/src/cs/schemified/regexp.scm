@@ -897,10 +897,12 @@
   (|#%name|
    rx:alts?
    (lambda (v)
-     (if (rx:alts?_2576 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:alts?_2576 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:alts?_2576 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:alts?_2576 (impersonator-val v)) #f)))
+       #f))))
 (define rx:alts-rx_2530
   (|#%name| rx:alts-rx1 (record-accessor struct:rx:alts 0)))
 (define rx:alts-rx_1874
@@ -954,10 +956,12 @@
   (|#%name|
    rx:sequence?
    (lambda (v)
-     (if (rx:sequence?_3213 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:sequence?_3213 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:sequence?_3213 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:sequence?_3213 (impersonator-val v)) #f)))
+       #f))))
 (define rx:sequence-rxs_2380
   (|#%name| rx:sequence-rxs (record-accessor struct:rx:sequence 0)))
 (define rx:sequence-rxs
@@ -1024,10 +1028,12 @@
   (|#%name|
    rx:group?
    (lambda (v)
-     (if (rx:group?_3085 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:group?_3085 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:group?_3085 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:group?_3085 (impersonator-val v)) #f)))
+       #f))))
 (define rx:group-rx_2903
   (|#%name| rx:group-rx (record-accessor struct:rx:group 0)))
 (define rx:group-rx
@@ -1093,10 +1099,12 @@
   (|#%name|
    rx:repeat?
    (lambda (v)
-     (if (rx:repeat?_2609 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:repeat?_2609 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:repeat?_2609 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:repeat?_2609 (impersonator-val v)) #f)))
+       #f))))
 (define rx:repeat-rx_2269
   (|#%name| rx:repeat-rx (record-accessor struct:rx:repeat 0)))
 (define rx:repeat-rx
@@ -1193,10 +1201,12 @@
   (|#%name|
    rx:maybe?
    (lambda (v)
-     (if (rx:maybe?_2766 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:maybe?_2766 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:maybe?_2766 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:maybe?_2766 (impersonator-val v)) #f)))
+       #f))))
 (define rx:maybe-rx_2762
   (|#%name| rx:maybe-rx (record-accessor struct:rx:maybe 0)))
 (define rx:maybe-rx
@@ -1262,12 +1272,14 @@
   (|#%name|
    rx:conditional?
    (lambda (v)
-     (if (rx:conditional?_2616 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (rx:conditional?_2616 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:conditional?_2616 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (rx:conditional?_2616 (impersonator-val v))
+            #f)))
+       #f))))
 (define rx:conditional-tst_3132
   (|#%name| rx:conditional-tst (record-accessor struct:rx:conditional 0)))
 (define rx:conditional-tst
@@ -1399,12 +1411,12 @@
   (|#%name|
    rx:lookahead?
    (lambda (v)
-     (if (rx:lookahead?_3136 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (rx:lookahead?_3136 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:lookahead?_3136 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:lookahead?_3136 (impersonator-val v)) #f)))
+       #f))))
 (define rx:lookahead-rx_2682
   (|#%name| rx:lookahead-rx (record-accessor struct:rx:lookahead 0)))
 (define rx:lookahead-rx
@@ -1502,12 +1514,14 @@
   (|#%name|
    rx:lookbehind?
    (lambda (v)
-     (if (rx:lookbehind?_3001 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (rx:lookbehind?_3001 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:lookbehind?_3001 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (rx:lookbehind?_3001 (impersonator-val v))
+            #f)))
+       #f))))
 (define rx:lookbehind-rx_2597
   (|#%name| rx:lookbehind-rx (record-accessor struct:rx:lookbehind 0)))
 (define rx:lookbehind-rx
@@ -1672,10 +1686,12 @@
   (|#%name|
    rx:cut?
    (lambda (v)
-     (if (rx:cut?_2453 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:cut?_2453 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:cut?_2453 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:cut?_2453 (impersonator-val v)) #f)))
+       #f))))
 (define rx:cut-rx_2624 (|#%name| rx:cut-rx (record-accessor struct:rx:cut 0)))
 (define rx:cut-rx
   (|#%name|
@@ -1766,12 +1782,12 @@
   (|#%name|
    rx:reference?
    (lambda (v)
-     (if (rx:reference?_2938 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (rx:reference?_2938 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:reference?_2938 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:reference?_2938 (impersonator-val v)) #f)))
+       #f))))
 (define rx:reference-n_2302
   (|#%name| rx:reference-n (record-accessor struct:rx:reference 0)))
 (define rx:reference-n
@@ -1838,10 +1854,12 @@
   (|#%name|
    rx:range?
    (lambda (v)
-     (if (rx:range?_1948 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:range?_1948 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:range?_1948 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:range?_1948 (impersonator-val v)) #f)))
+       #f))))
 (define rx:range-range_2664
   (|#%name| rx:range-range (record-accessor struct:rx:range 0)))
 (define rx:range-range
@@ -1893,12 +1911,14 @@
   (|#%name|
    rx:unicode-categories?
    (lambda (v)
-     (if (rx:unicode-categories?_2156 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (rx:unicode-categories?_2156 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:unicode-categories?_2156 v)
+         #t
+         ($value
+          (if (impersonator? v)
+            (rx:unicode-categories?_2156 (impersonator-val v))
+            #f)))
+       #f))))
 (define rx:unicode-categories-symlist_1950
   (|#%name|
    rx:unicode-categories-symlist
@@ -2162,12 +2182,12 @@
   (|#%name|
    parse-config?
    (lambda (v)
-     (if (parse-config?_2003 v)
-       #t
-       ($value
-        (if (impersonator? v)
-          (parse-config?_2003 (impersonator-val v))
-          #f))))))
+     (if (unsafe-struct? v)
+       (if (parse-config?_2003 v)
+         #t
+         ($value
+          (if (impersonator? v) (parse-config?_2003 (impersonator-val v)) #f)))
+       #f))))
 (define parse-config-who_2100
   (|#%name| parse-config-who (record-accessor struct:parse-config 0)))
 (define parse-config-who
@@ -4730,10 +4750,12 @@
   (|#%name|
    lazy-bytes?
    (lambda (v)
-     (if (lazy-bytes?_2654 v)
-       #t
-       ($value
-        (if (impersonator? v) (lazy-bytes?_2654 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (lazy-bytes?_2654 v)
+         #t
+         ($value
+          (if (impersonator? v) (lazy-bytes?_2654 (impersonator-val v)) #f)))
+       #f))))
 (define lazy-bytes-bstr_2345
   (|#%name| lazy-bytes-bstr (record-accessor struct:lazy-bytes 0)))
 (define lazy-bytes-bstr
@@ -7291,10 +7313,12 @@
   (|#%name|
    regexp?
    (lambda (v)
-     (if (rx:regexp?_2382 v)
-       #t
-       ($value
-        (if (impersonator? v) (rx:regexp?_2382 (impersonator-val v)) #f))))))
+     (if (unsafe-struct? v)
+       (if (rx:regexp?_2382 v)
+         #t
+         ($value
+          (if (impersonator? v) (rx:regexp?_2382 (impersonator-val v)) #f)))
+       #f))))
 (define rx:regexp-bytes?_3116
   (|#%name| regexp-bytes? (record-accessor struct:rx:regexp 0)))
 (define rx:regexp-bytes?
