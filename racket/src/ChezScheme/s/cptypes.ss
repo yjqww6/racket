@@ -545,6 +545,7 @@ Notes:
     (case name
       [pair? 'pair]
       [box? 'box]
+      [mutable-box? 'mutable-box]
       [$record? '$record]
       [fixnum? 'fixnum]
       [bignum? 'bignum]
@@ -592,6 +593,7 @@ Notes:
     (case name
       [pair 'pair]
       [box 'box]
+      [mutable-box 'mutable-box]
       [$record '$record]
       [fixnum 'fixnum]
       [bignum 'bignum]

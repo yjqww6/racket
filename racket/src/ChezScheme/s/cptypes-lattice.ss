@@ -390,6 +390,10 @@
          [(bytevector) (union/simple x bytevector? y)] ; i.e. '#vu8()
          [(fxvector) (union/simple x fxvector? y)] ; i.e. '#vfx()
          [(flvector) (union/simple x flvector? y)] ; i.e. '#vfl()
+         [(box mutable-box)
+          (cond
+           [(memq x '(box mutable-box)) 'box]
+           [else (union/true x)])]
          [else (union/true x)])]))
 
   (define (intersect/simple x pred? qpred y)
@@ -667,6 +671,11 @@
          [(bytevector) (intersect/simple x bytevector? 'bytevector y)] ; i.e. '#vu8()
          [(fxvector) (intersect/simple x fxvector? 'fxvector y)] ; i.e. '#vfx()
          [(flvector) (intersect/simple x flvector? 'flvector y)] ; i.e. '#vfl()
+         [(mutable-box box)
+          (cond
+           [(memq x '(mutable-box box)) 'mutable-box]
+           [(eq? x 'true) y]
+           [else 'bottom])]
          [else
           (cond 
             [(eq? x 'true)
